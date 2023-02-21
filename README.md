@@ -15,10 +15,9 @@
 
 ## About
 
-Our app is designed to help people in the neighborhood find the products they need at nearby stores. By using our app, you can avoid traveling long distances to find what you need and support local businesses in your community. 
+Our app is designed to help people in the neighborhood find the products they need at nearby stores. By using our app, you can avoid traveling long distances to find what you need and support local businesses in your community.
 
 Here's what our app can do for you:
-
 
 📍 Find nearby stores: Our app uses maps to show you all the stores in your area that carry the products you're looking for.
 
@@ -29,6 +28,10 @@ Here's what our app can do for you:
 We believe that building a strong sense of community starts with making everyday tasks like grocery shopping easier and more convenient. So join us today and start experiencing the benefits of a more connected neighborhood!
 
 ## Setup
+
+On the terminal **cd** into the root folder `app/client/foodfinder` and run `npm install`
+
+To execute run `npm start`
 
 ## Running
 
