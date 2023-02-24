@@ -29,9 +29,17 @@ We believe that building a strong sense of community starts with making everyday
 
 ## Setup
 
-On the terminal **cd** into the root folder `app/client/foodfinder` and run `npm install`
+### `npm install`
 
-To execute run `npm start`
+Run it in the root folder. The 'npm install' installs all modules that are listed on package.json file and their dependencies
+
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
 
 ## Running
 
