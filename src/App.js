@@ -1,12 +1,18 @@
-import React from 'react';
-import Maps from './components/Maps';
-
+import React from "react";
+import Maps from "./components/Maps";
+import ProductSearch from "./components/ProductSearch";
 
 const App = () => {
     return (
-    <div>
-        <Maps/>
-    </div>
+        <>
+            <div id="location">
+                <Maps />
+            </div>
+            <br />
+            <div id="productSearch">
+                <ProductSearch />
+            </div>
+        </>
     );
 };
 
