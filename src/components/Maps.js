@@ -1,5 +1,7 @@
 import React from 'react'
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { Marker } from '@react-google-maps/api';
+//const ScriptLoaded = require("../../docs/ScriptLoaded").default;
 
 
 const containerStyle = {
@@ -9,6 +11,24 @@ const containerStyle = {
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
+// example marker position
+
+const markerPosition = {
+  lat: 52.489587,
+  lng: 13.485512
+}
+
+const markerPosition2 = {
+  lat: 52.490766,
+  lng: 13.483752
+}
+
+const onLoad = marker => {
+  console.log('marker: ', marker)
+}
+
+// class component Maps
+
 class Maps extends React.Component {
   
   constructor(props){
@@ -17,7 +37,7 @@ class Maps extends React.Component {
     this.state = { lng: null, lat: null };
 }
 
-// get location
+// get user's location
     componentDidMount(){
       
       window.navigator.geolocation.getCurrentPosition(
@@ -36,6 +56,17 @@ class Maps extends React.Component {
         zoom={14}
       >
         { /* Child components, such as markers, info windows, etc. */ }
+
+      <Marker
+      onLoad={onLoad}
+      position={markerPosition}
+  />
+
+<Marker
+      onLoad={onLoad}
+      position={markerPosition2}
+  />
+        
         <></>
       </GoogleMap>
     </LoadScript>
