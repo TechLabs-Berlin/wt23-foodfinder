@@ -5,10 +5,10 @@ import GetLng from './GetLng';
 
 function DistanceCalc() {
 
-  let startLat = 6; // How do I get my GetLat and GetLng here?
-  let startLng = 3;
-  let endLat = 5;
-  let endLng = 1;
+  let startLat = GetLat(); // How do I get my GetLat and GetLng here?
+  let startLng = GetLng();
+  let endLat = 52.56;
+  let endLng = 13.4;
 
   const dist = DistanceFormula(startLat, startLng, endLat, endLng);
 

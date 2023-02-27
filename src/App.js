@@ -17,10 +17,7 @@ const App = () => {
             </div>
             <br />
             <div>
-            { //<GetLocation />
-                                    }
                 <DistanceCalc />
-                <GetLat />
             </div>
         </>
     );
