@@ -1,0 +1,7 @@
+{
+  "name": "wt23-foodfinder-ionic-react-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
