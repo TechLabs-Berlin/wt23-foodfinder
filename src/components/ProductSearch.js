@@ -1,5 +1,6 @@
+import ProductItem from "../components/ProductItem";
 import { useState } from "react";
-import ProductCard from "./ProductCard";
+import { IonButton, IonSearchbar, IonList } from "@ionic/react";
 
 function ProductSearch() {
     const [input, setInput] = useState("");
@@ -27,25 +28,26 @@ function ProductSearch() {
     };
     //list results
     const productResults = products.map((product, index) => {
-        return <ProductCard product={product} key={index} />;
+        return <ProductItem product={product} key={index} />;
     });
 
     return (
         <>
-            <input
-                onChange={handleChange}
+            <IonSearchbar
+                // debounce={1000}
+                onIonChange={handleChange}
                 id="searchInput"
                 type="text"
                 placeholder="Search"
-                required
-            ></input>
-            <button onClick={handleClick} id="searchButton">
+            ></IonSearchbar>
+            <IonButton onClick={handleClick} id="searchButton">
                 Search
-            </button>
+            </IonButton>
 
-            <div id="productList">
-                <div>{productResults}</div>
-            </div>
+            <IonList id="productList">
+                {productResults}
+                {/* <IonItem>{productResults}</IonItem> */}
+            </IonList>
         </>
     );
 }

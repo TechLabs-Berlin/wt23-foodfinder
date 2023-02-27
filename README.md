@@ -33,10 +33,10 @@ We believe that building a strong sense of community starts with making everyday
 
 Run it in the root folder. The 'npm install' installs all modules that are listed on package.json file and their dependencies
 
-### `npm start`
+### `ionic serve`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:8100](http://localhost:8100) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
