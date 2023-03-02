@@ -7,6 +7,8 @@ import {
     IonTitle,
     IonToolbar,
 } from "@ionic/react";
+import { DistanceCalc } from "../components/Distance";
+import { MaxDistanceSet } from "../components/MaxDistance";
 
 const Tab2 = () => {
     return (
@@ -23,6 +25,8 @@ const Tab2 = () => {
                     </IonToolbar>
                 </IonHeader>
                 <Maps />
+                <DistanceCalc />
+                <MaxDistanceSet />
             </IonContent>
         </IonPage>
     );
