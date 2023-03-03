@@ -24,6 +24,7 @@ const Tab2 = () => {
                         <IonTitle size="large">Tab 2</IonTitle>
                     </IonToolbar>
                 </IonHeader>
+                {/* MAPS */}
                 <Maps />
                 <DistanceCalc />
                 <MaxDistanceSet />

@@ -1,31 +1,36 @@
 import ProductItem from "../components/ProductItem";
 import { useState } from "react";
-import { IonButton, IonSearchbar, IonList } from "@ionic/react";
+import { IonSearchbar, IonList } from "@ionic/react";
 
 function ProductSearch() {
     const [input, setInput] = useState("");
     const [products, setProducts] = useState([]);
     // save user input
+    // has issue, searchs empty, will fix with useEffect
     const handleChange = (event) => {
         setInput(event.target.value);
     };
-    // handle click on Search button
-    const handleClick = () => {
-        fetch(
-            `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${input}`
-        )
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    alert("HTTP-Error: " + response.status);
-                }
-            })
-            .then((response) => {
-                setProducts(response.products);
-                console.log(response.products);
-            });
+    // handle Enter/click on Search
+    const handleEnter = (event) => {
+        if (event.key === "Enter") {
+            console.log(input);
+            fetch(
+                `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${input}`
+            )
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        alert("HTTP-Error: " + response.status);
+                    }
+                })
+                .then((response) => {
+                    setProducts(response.products);
+                    console.log(response.products);
+                });
+        }
     };
+
     //list results
     const productResults = products.map((product, index) => {
         return <ProductItem product={product} key={index} />;
@@ -34,20 +39,16 @@ function ProductSearch() {
     return (
         <>
             <IonSearchbar
-                // debounce={1000}
                 onIonChange={handleChange}
-                id="searchInput"
-                type="text"
+                // debounce={1000}
+                animated={true}
+                showCancelButton="focus"
                 placeholder="Search"
+                inputMode="search"
+                onKeyDown={handleEnter}
             ></IonSearchbar>
-            <IonButton onClick={handleClick} id="searchButton">
-                Search
-            </IonButton>
 
-            <IonList id="productList">
-                {productResults}
-                {/* <IonItem>{productResults}</IonItem> */}
-            </IonList>
+            <IonList id="productList">{productResults}</IonList>
         </>
     );
 }
