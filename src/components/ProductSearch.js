@@ -1,6 +1,7 @@
 import ProductItem from "../components/ProductItem";
 import { useState } from "react";
-import { IonSearchbar, IonList } from "@ionic/react";
+import { IonCard, IonCardContent, IonSearchbar, IonList } from "@ionic/react";
+import "./ProductSearch.css";
 
 function ProductSearch() {
     const [input, setInput] = useState("");
@@ -36,6 +37,19 @@ function ProductSearch() {
         return <ProductItem product={product} key={index} />;
     });
 
+    const warningChip =
+        productResults.length > 0 ? (
+            <IonCard className="warning">
+                <IonCardContent>
+                    <strong>Warning</strong> There is always a possibility that
+                    data about allergens may be missing, incomplete, incorrect
+                    or that the product's composition has changed. If you are
+                    allergic, always check the information on the actual product
+                    packaging.
+                </IonCardContent>
+            </IonCard>
+        ) : null;
+
     return (
         <>
             <IonSearchbar
@@ -48,7 +62,10 @@ function ProductSearch() {
                 onKeyDown={handleEnter}
             ></IonSearchbar>
 
-            <IonList id="productList">{productResults}</IonList>
+            <IonList id="productList">
+                {warningChip}
+                {productResults}
+            </IonList>
         </>
     );
 }
