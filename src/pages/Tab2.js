@@ -1,4 +1,7 @@
 import Maps from "../components/Maps";
+import { DistanceCalc } from "../components/Distance";
+import { MaxDistanceSet } from "../components/MaxDistance";
+import StoreFilter from "../components/StoreFilter";
 
 import {
     IonContent,
@@ -7,8 +10,6 @@ import {
     IonTitle,
     IonToolbar,
 } from "@ionic/react";
-import { DistanceCalc } from "../components/Distance";
-import { MaxDistanceSet } from "../components/MaxDistance";
 
 const Tab2 = () => {
     return (
@@ -28,6 +29,7 @@ const Tab2 = () => {
                 <Maps />
                 <DistanceCalc />
                 <MaxDistanceSet />
+                <StoreFilter />
             </IonContent>
         </IonPage>
     );
