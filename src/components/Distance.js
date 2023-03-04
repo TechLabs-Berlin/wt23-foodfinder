@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import GetLat from './GetLat';
-import GetLng from './GetLng';
-
+import { GetLat, GetLng } from './GetLatLng';
 
 function DistanceCalc() {
 
-  let startLat = GetLat(); // How do I get my GetLat and GetLng here?
+  let startLat = GetLat();
   let startLng = GetLng();
   let endLat = 52.56;
   let endLng = 13.4;
@@ -32,11 +30,7 @@ function DistanceFormula(startLat, startLng, endLat, endLng) {
   }, [startLat, startLng, endLat, endLng]); // second argument - run at initial render + run after every re-render if data has changed
 
   return (
-    //distance,
-    //console.log(distance),
-    <div>
-      Distance: {distance} km
-    </div>
+      distance
   )
 }
 

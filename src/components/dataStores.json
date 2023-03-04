@@ -1,0 +1,12 @@
+[{
+    "id": "ID of FIrst Place",
+    "name": "Store 1",
+    "lat":40.756795,
+    "lng":-73.954298
+  },
+  {
+    "id": "ID of Second Place",
+    "name": "Store 2",
+    "lat":40.753167,
+    "lng":-73.968120
+  }]
