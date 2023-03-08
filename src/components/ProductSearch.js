@@ -1,22 +1,26 @@
 import ProductItem from "../components/ProductItem";
 import { useState } from "react";
-import { IonCard, IonCardContent, IonSearchbar, IonList } from "@ionic/react";
+import {
+    IonCard,
+    IonCardContent,
+    IonSearchbar,
+    IonList,
+    IonSpinner,
+} from "@ionic/react";
 import "./ProductSearch.css";
 
 function ProductSearch() {
-    const [input, setInput] = useState("");
     const [products, setProducts] = useState([]);
-    // save user input
-    // has issue, searchs empty, will fix with useEffect
-    const handleChange = (event) => {
-        setInput(event.target.value);
-    };
-    // handle Enter/click on Search
+    const [spinnerShow, setSpinnerShow] = useState(false);
+
     const handleEnter = (event) => {
         if (event.key === "Enter") {
-            console.log(input);
+            setSpinnerShow(true);
+            console.log(event.target.value);
+            const inputValue = event.target.value;
+            // console.log(input);
             fetch(
-                `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${input}`
+                `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${inputValue}`
             )
                 .then((response) => {
                     if (response.ok) {
@@ -28,6 +32,7 @@ function ProductSearch() {
                 .then((response) => {
                     setProducts(response.products);
                     console.log(response.products);
+                    setSpinnerShow(false);
                 });
         }
     };
@@ -47,22 +52,21 @@ function ProductSearch() {
                     allergic, always check the information on the actual product
                     packaging.
                 </IonCardContent>
+                {/* add a closing button */}
             </IonCard>
         ) : null;
 
     return (
         <>
             <IonSearchbar
-                onIonChange={handleChange}
-                // debounce={1000}
                 animated={true}
                 showCancelButton="focus"
                 placeholder="Search"
                 inputMode="search"
                 onKeyDown={handleEnter}
             ></IonSearchbar>
-
             <IonList id="productList">
+                {spinnerShow ? <IonSpinner name="dots" /> : null}
                 {warningChip}
                 {productResults}
             </IonList>
