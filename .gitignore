@@ -28,3 +28,4 @@ yarn-error.log*
 # Optional eslint cache
 .eslintcache
 /ds/secrets/
+/ds/.env
