@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 function applyDistanceFormula(startLat, startLng, endLat, endLng) {
   const R = 6371; // radius Earth
 
@@ -16,19 +18,10 @@ function applyDistanceFormula(startLat, startLng, endLat, endLng) {
   return d.toFixed(2);
 }
 
-export async function getCoordinates() {
-  try {
-    if ("geolocation" in window.navigator) {
-      window.navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        return { latitude, longitude };
-      });
-    } else {
-      throw new Error("Geolocation is not supported.");
-    }
-  } catch (error) {
-    console.error(error);
-  }
+export function getCoordinates(options) {
+  return new Promise((resolve, reject) =>
+    navigator.geolocation.getCurrentPosition(resolve, reject, options)
+  );
 }
 
 export function calculateDistance() {
