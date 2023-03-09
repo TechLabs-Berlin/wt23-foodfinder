@@ -1,4 +1,5 @@
-import React from "react";
+import { useEffect, useCallback, useState } from "react";
+
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import { MarkerF } from "@react-google-maps/api";
 import { getCoordinates } from "../utils/geolocation";
@@ -13,12 +14,6 @@ const markerPosition = {
   lng: 13.485512,
 };
 
-const { latitude, longitude } = getCoordinates();
-const center = {
-  lat: latitude,
-  lng: longitude,
-};
-
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 function Maps() {
@@ -26,9 +21,20 @@ function Maps() {
     console.log("marker: ", marker);
   };
 
+  const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
+
+  const fetchCoordinates = useCallback(async () => {
+    const data = await getCoordinates();
+    setCoordinates({ lat: data.coords.latitude, lng: data.coords.longitude });
+  }, []);
+
+  useEffect(() => {
+    fetchCoordinates();
+  }, [fetchCoordinates]);
+
   return (
     <LoadScript googleMapsApiKey={googleMapsApiKey}>
-      <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={14}>
+      <GoogleMap mapContainerStyle={containerStyle} center={coordinates} zoom={14}>
         <MarkerF onLoad={onLoad} position={markerPosition} />
       </GoogleMap>
     </LoadScript>
