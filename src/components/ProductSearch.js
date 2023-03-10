@@ -1,5 +1,5 @@
 import ProductItem from "../components/ProductItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     IonCard,
     IonCardContent,
@@ -12,6 +12,7 @@ import "./ProductSearch.css";
 function ProductSearch() {
     const [products, setProducts] = useState([]);
     const [spinnerShow, setSpinnerShow] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(""); //save selected product
 
     const handleEnter = (event) => {
         if (event.key === "Enter") {
@@ -37,9 +38,18 @@ function ProductSearch() {
         }
     };
 
+    // console.log selected product - to be used in the API call
+    useEffect(() => {
+        console.log(selectedProduct.product_name, selectedProduct.brands, selectedProduct.quantity);
+      }, [selectedProduct]);
+    
+      const handleProductClick = (product) => {
+        setSelectedProduct(product);
+      };
+
     //list results
     const productResults = products.map((product, index) => {
-        return <ProductItem product={product} key={index} />;
+        return <ProductItem product={product} key={index} onClick={handleProductClick}/>;
     });
 
     const warningChip =
