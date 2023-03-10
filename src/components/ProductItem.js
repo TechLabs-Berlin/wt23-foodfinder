@@ -1,27 +1,35 @@
-import { IonIcon, IonItem, IonLabel, IonButton } from "@ionic/react";
-import { star } from "ionicons/icons";
+import { IonItem, IonLabel, IonButton } from "@ionic/react";
 import { Icon } from "@iconify/react";
 
 function ProductItem({ product }) {
-    // console.log(product);
-    const glutenFree = product.labels_tags.includes("en:no-gluten") ? (
-        <Icon icon="mdi:gluten-free" color="#D65B79" />
-    ) : null;
-    const gluten = !product.labels_tags.includes("en:no-gluten") ? (
-        <Icon icon="mdi:gluten" color="#5bd6b7" />
-    ) : null;
-    const vegetarian = product.labels_tags.includes("en:vegetarian") ? (
-        <Icon icon="lucide:leaf" color="#5bd6b7" />
-    ) : null;
-    const vegan = product.labels_tags.includes("en:vegan") ? (
-        <Icon icon="lucide:vegan" color="#5bd6b7" />
-    ) : null;
-    const allergen =
-        product.allergens.length > 0 ? (
-            <Icon icon="lucide:info" color="#D65B79" />
-        ) : null;
+    let glutenFree;
+    let gluten;
+    let vegetarian;
+    let vegan;
+    let allergen;
+    let warning;
 
-    // contains: img, name, brand, amount, icons for intolerances <= 4
+    if (product.labels_tags && product.labels_tags.length > 0) {
+        glutenFree = product.labels_tags.includes("en:no-gluten") ? (
+            <Icon icon="mdi:gluten-free" color="#D65B79" />
+        ) : null;
+        gluten = !product.labels_tags.includes("en:no-gluten") ? (
+            <Icon icon="mdi:gluten" color="#5bd6b7" />
+        ) : null;
+        vegetarian = product.labels_tags.includes("en:vegetarian") ? (
+            <Icon icon="lucide:leaf" color="#5bd6b7" />
+        ) : null;
+        vegan = product.labels_tags.includes("en:vegan") ? (
+            <Icon icon="lucide:vegan" color="#5bd6b7" />
+        ) : null;
+        allergen =
+            product.allergens.length > 0 ? (
+                <Icon icon="lucide:info" color="#D65B79" />
+            ) : null;
+    } else {
+        warning = <Icon icon="lucide:info" color="#eee114" />;
+    }
+
     return (
         // detail: chevron button
         <IonItem href="#" detail="true">
@@ -34,18 +42,26 @@ function ProductItem({ product }) {
             <IonButton
                 href="#"
                 slot="start"
-                shape="round"
+                // shape="round"
                 fill="clear"
-                size="small"
+                size="large"
             >
-                <IonIcon href="#" icon={star} color="warning"></IonIcon>
+                <Icon
+                    href="#"
+                    icon="ic:round-star-outline"
+                    color="#eee114"
+                    width="28"
+                ></Icon>
             </IonButton>
             {/*thumbnail image*/}
             <ion-thumbnail slot="start">
                 <img
                     alt={product.product_name}
                     // src={product.image_front_thumb_url}
-                    src={product.image_front_small_url}
+                    src={
+                        product.image_front_small_url ||
+                        "https://static.thenounproject.com/png/3674270-200.png"
+                    }
                 />
             </ion-thumbnail>
             {gluten}
@@ -53,6 +69,7 @@ function ProductItem({ product }) {
             {vegetarian}
             {vegan}
             {allergen}
+            {warning}
         </IonItem>
     );
 }
