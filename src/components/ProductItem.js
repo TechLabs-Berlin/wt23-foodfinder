@@ -1,7 +1,12 @@
 import { IonItem, IonLabel, IonButton } from "@ionic/react";
 import { Icon } from "@iconify/react";
 
-function ProductItem({ product }) {
+function ProductItem({ product, onClick }) {
+    
+    const handleClick = () => {
+        onClick(product);
+      };
+
     let glutenFree;
     let gluten;
     let vegetarian;

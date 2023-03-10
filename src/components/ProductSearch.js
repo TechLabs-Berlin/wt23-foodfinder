@@ -1,6 +1,5 @@
 import ProductItem from "../components/ProductItem";
-<<<<<<< HEAD
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     IonCard,
     IonCardContent,
@@ -9,25 +8,12 @@ import {
     IonSpinner,
 } from "@ionic/react";
 import "./ProductSearch.css";
-=======
-import { useState, useEffect } from "react";
-import { IonSearchbar, IonList, IonText } from "@ionic/react";
->>>>>>> de43d0b (- deleted StoreFilter file)
 
 function ProductSearch() {
     const [products, setProducts] = useState([]);
-<<<<<<< HEAD
     const [spinnerShow, setSpinnerShow] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(""); //save selected product
 
-=======
-    const [selectedProduct, setSelectedProduct] = useState("");
-    // save user input
-    // has issue, searchs empty, will fix with useEffect
-    const handleChange = (event) => {
-        setInput(event.target.value);
-    };
-    // handle Enter/click on Search
->>>>>>> de43d0b (- deleted StoreFilter file)
     const handleEnter = (event) => {
         if (event.key === "Enter") {
             setSpinnerShow(true);
@@ -51,6 +37,7 @@ function ProductSearch() {
                 });
         }
     };
+
     // console.log selected product - to be used in the API call
     useEffect(() => {
         console.log(selectedProduct.product_name, selectedProduct.brands, selectedProduct.quantity);
