@@ -1,11 +1,14 @@
 import { IonIcon, IonItem, IonLabel, IonButton } from "@ionic/react";
 import { star } from "ionicons/icons";
 
-function ProductItem({ product }) {
+function ProductItem({ product, onClick }) {
+    const handleClick = () => {
+        onClick(product);
+      };
     // contains: img, name, brand, amount, icons for intolerances <= 4
     return (
         // detail: chevron button
-        <IonItem href="#" detail="true">
+        <IonItem detail="true" onClick={handleClick}>
             <IonLabel>
                 <h3>{product.product_name}</h3>
                 <p>Brand:{product.brands}</p>

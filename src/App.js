@@ -36,6 +36,7 @@ import Profile from "./pages/Profile";
 import Stores from "./pages/Stores";
 import Home from "./pages/Home";
 
+
 setupIonicReact();
 
 const App = () => (

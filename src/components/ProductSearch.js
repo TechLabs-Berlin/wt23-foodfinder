@@ -1,10 +1,11 @@
 import ProductItem from "../components/ProductItem";
-import { useState } from "react";
-import { IonSearchbar, IonList } from "@ionic/react";
+import { useState, useEffect } from "react";
+import { IonSearchbar, IonList, IonText } from "@ionic/react";
 
 function ProductSearch() {
     const [input, setInput] = useState("");
     const [products, setProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState("");
     // save user input
     // has issue, searchs empty, will fix with useEffect
     const handleChange = (event) => {
@@ -30,10 +31,18 @@ function ProductSearch() {
                 });
         }
     };
+    // console.log selected product - to be used in the API call
+    useEffect(() => {
+        console.log(selectedProduct.product_name, selectedProduct.brands, selectedProduct.quantity);
+      }, [selectedProduct]);
+    
+      const handleProductClick = (product) => {
+        setSelectedProduct(product);
+      };
 
     //list results
     const productResults = products.map((product, index) => {
-        return <ProductItem product={product} key={index} />;
+        return <ProductItem product={product} key={index} onClick={handleProductClick}/>;
     });
 
     return (
