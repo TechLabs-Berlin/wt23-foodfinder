@@ -32,7 +32,7 @@ function ProductItem({ product }) {
 
     return (
         // detail: chevron button
-        <IonItem href="#" detail="true">
+        <IonItem detail="true" onClick={handleClick}>
             <IonLabel>
                 <h3>{product.product_name}</h3>
                 <p>Brand:{product.brands}</p>

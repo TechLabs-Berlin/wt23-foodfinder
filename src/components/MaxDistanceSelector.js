@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IonLabel, IonRange } from "@ionic/react";
 
 export default function MaxDistanceSelector({ onChange }) {
-  const [maxDistance, setMaxDistance] = useState(0);
+  const [maxDistance, setMaxDistance] = useState(1);
 
   const handleChange = (evt) => {
     setMaxDistance(evt.detail.value);
