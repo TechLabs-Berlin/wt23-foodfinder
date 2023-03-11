@@ -24,11 +24,11 @@ const Stores = () => {
   /*const [maxDistance, setMaxDistance] = useState(1);
   console.log("maxDistance", maxDistance); */
 
-const selectedProduct = {
-  product_name: "Selected product name",
-  brands: "Selected Brand",
-  quantity: "4"
-}
+  const selectedProduct = {
+    product_name: "Selected product name",
+    brands: "Selected Brand",
+    quantity: "4",
+  };
 
   // const { stores } = useStoreFromAPI(maxDistance);
 
@@ -45,7 +45,13 @@ const selectedProduct = {
             <IonTitle size="large">Tab 2</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ProductItem product={selectedProduct} onClick={() => {console.log("Selected item clicked")}}/> {/*console.log can be substituted with a different function */}
+        <ProductItem
+          product={selectedProduct}
+          onClick={() => {
+            console.log("Selected item clicked");
+          }}
+        />{" "}
+        {/*console.log can be substituted with a different function */}
         {/* MAPS */}
         <Maps />
         {/*<MaxDistanceSelector onChange={setMaxDistance} /> */}

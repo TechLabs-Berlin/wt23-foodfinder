@@ -19,7 +19,7 @@ export default function MaxDistanceSelector({ onChange }) {
         min={0}
         max={5}
       >
-      <IonLabel slot="start">Max. distance: {maxDistance} km</IonLabel>
+        <IonLabel slot="start">Max. distance: {maxDistance} km</IonLabel>
       </IonRange>
     </>
   );
