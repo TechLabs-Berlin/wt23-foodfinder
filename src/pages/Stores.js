@@ -12,11 +12,11 @@ import {
 import { useState } from "react";
 
 //Supabase
-import { createClient } from '@supabase/supabase-js';
+// import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = 'https://bcdgtduoxtstjhrmcfoa.supabase.co';
-const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+// const supabaseUrl = 'https://bcdgtduoxtstjhrmcfoa.supabase.co';
+// const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
+// const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Max. distance - pass to API
 
