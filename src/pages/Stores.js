@@ -1,6 +1,7 @@
 import Maps from "../components/Maps";
 import MaxDistanceSelector from "../components/MaxDistanceSelector";
 import ProductItem from "../components/ProductItem";
+import ProductUserFeedback from "../components/ProductUserFeedback";
 
 import {
   IonContent,
@@ -21,8 +22,8 @@ import { useState } from "react";
 // Max. distance - pass to API
 
 const Stores = () => {
-  const [maxDistance, setMaxDistance] = useState(1);
-  console.log("maxDistance", maxDistance);
+  /*const [maxDistance, setMaxDistance] = useState(1);
+  console.log("maxDistance", maxDistance); */
 
 const selectedProduct = {
   product_name: "Selectet product name",
@@ -48,7 +49,8 @@ const selectedProduct = {
         <ProductItem product={selectedProduct} onClick={() => {console.log("Selected item clicked")}}/> {/*console.log can be substituted with a different function */}
         {/* MAPS */}
         <Maps />
-        <MaxDistanceSelector onChange={setMaxDistance} />
+        {/*<MaxDistanceSelector onChange={setMaxDistance} /> */}
+        <ProductUserFeedback />
       </IonContent>
     </IonPage>
   );

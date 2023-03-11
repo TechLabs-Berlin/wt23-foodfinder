@@ -8,8 +8,11 @@ import {
     IonSpinner,
 } from "@ionic/react";
 import "./ProductSearch.css";
+import MaxDistanceSelector from "../components/MaxDistanceSelector";
 
 function ProductSearch() {
+    const [maxDistance, setMaxDistance] = useState(1);
+    console.log("maxDistance", maxDistance);
     const [products, setProducts] = useState([]);
     const [spinnerShow, setSpinnerShow] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(""); //save selected product
@@ -75,6 +78,7 @@ function ProductSearch() {
                 inputMode="search"
                 onKeyDown={handleEnter}
             ></IonSearchbar>
+            <MaxDistanceSelector onChange={setMaxDistance} />
             <IonList id="productList">
                 {spinnerShow ? <IonSpinner name="dots" /> : null}
                 {warningChip}
