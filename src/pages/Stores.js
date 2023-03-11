@@ -1,7 +1,6 @@
 import Maps from "../components/Maps";
 import MaxDistanceSelector from "../components/MaxDistanceSelector";
 import ProductItem from "../components/ProductItem";
-import ProductUserFeedback from "../components/ProductUserFeedback";
 
 import {
   IonContent,
@@ -26,7 +25,7 @@ const Stores = () => {
   console.log("maxDistance", maxDistance); */
 
 const selectedProduct = {
-  product_name: "Selectet product name",
+  product_name: "Selected product name",
   brands: "Selected Brand",
   quantity: "4"
 }
@@ -50,7 +49,6 @@ const selectedProduct = {
         {/* MAPS */}
         <Maps />
         {/*<MaxDistanceSelector onChange={setMaxDistance} /> */}
-        <ProductUserFeedback />
       </IonContent>
     </IonPage>
   );

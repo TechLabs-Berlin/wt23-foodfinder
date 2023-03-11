@@ -1,5 +1,3 @@
-// import { useEffect, useState } from "react";
-
 function applyDistanceFormula(startLat, startLng, endLat, endLng) {
   const R = 6371; // radius Earth
 

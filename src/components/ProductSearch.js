@@ -41,7 +41,7 @@ function ProductSearch() {
         }
     };
 
-    // console.log selected product - to be used in the API call
+    // console.log selected product - to be used in the Map component
     useEffect(() => {
         console.log(selectedProduct.product_name, selectedProduct.brands, selectedProduct.quantity);
       }, [selectedProduct]);
