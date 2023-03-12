@@ -1,5 +1,5 @@
 import Maps from "../components/Maps";
-import MaxDistanceSelector from "../components/MaxDistanceSelector";
+// import MaxDistanceSelector from "../components/MaxDistanceSelector";
 import ProductItem from "../components/ProductItem";
 
 import {
@@ -9,7 +9,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { useState } from "react";
+// import { useState } from "react";
 
 //Supabase
 // import { createClient } from '@supabase/supabase-js';
