@@ -16,10 +16,10 @@ function ProductItem({ product, onClick }) {
 
     if (product.labels_tags && product.labels_tags.length > 0) {
         glutenFree = product.labels_tags.includes("en:no-gluten") ? (
-            <Icon icon="mdi:gluten-free" color="#D65B79" />
+            <Icon icon="mdi:gluten-free" color="#5bd6b7" />
         ) : null;
         gluten = !product.labels_tags.includes("en:no-gluten") ? (
-            <Icon icon="mdi:gluten" color="#5bd6b7" />
+            <Icon icon="mdi:gluten" color="#D65B79" />
         ) : null;
         vegetarian = product.labels_tags.includes("en:vegetarian") ? (
             <Icon icon="lucide:leaf" color="#5bd6b7" />
