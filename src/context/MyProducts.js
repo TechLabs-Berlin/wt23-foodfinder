@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import { useState } from "react";
 
 const MyProducts = createContext();
@@ -6,10 +6,11 @@ const MyProducts = createContext();
 function Provider({ children }) {
     let [favorites, setFavorites] = useState([]);
 
+    useEffect(() => console.log("my favorites are", favorites), [favorites]);
+
     const addFav = (product) => {
         const updatedFavs = [...favorites, product];
         setFavorites(updatedFavs);
-        console.log("my favorites are", favorites);
     };
 
     const deleteFav = (product) => {

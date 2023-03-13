@@ -1,9 +1,8 @@
 import useMyProductsContext from "../hooks/use-products-context";
 import ProductItem from "../components/ProductItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
-    IonButton,
     IonContent,
     IonHeader,
     IonPage,
@@ -12,23 +11,17 @@ import {
 } from "@ionic/react";
 
 const Profile = () => {
+    // When user taps on the full star the product should be eliminated from array and star changes to outline
+    // Decision to not set a dependency on useEffect so when unfavorited the product stays until refresh
     const { favorites } = useMyProductsContext();
     let [favs, setFavs] = useState([]);
 
-    const handleClick = (event) => {
-        event.preventDefault();
-
+    useEffect(() => {
         const favList = favorites.map((product, index) => {
-            return (
-                <ProductItem
-                    product={product}
-                    key={index}
-                    // onClick={handleProductClick}
-                />
-            );
+            return <ProductItem product={product} key={index} />;
         });
         setFavs(favList);
-    };
+    }, []);
 
     return (
         <IonPage>
@@ -43,7 +36,6 @@ const Profile = () => {
                         <IonTitle size="large">My Food Finder</IonTitle>
                     </IonToolbar>
                 </IonHeader>
-                <IonButton onclick={handleClick}>Favorites</IonButton>
                 {favs}
             </IonContent>
         </IonPage>
