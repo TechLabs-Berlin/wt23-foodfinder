@@ -1,12 +1,21 @@
 import { IonItem, IonLabel, IonButton } from "@ionic/react";
 import { Icon } from "@iconify/react";
+import useMyProductsContext from "../hooks/use-products-context";
 
 function ProductItem({ product, onClick }) {
-    
+    // importing favs and handling click
+    const { addFav } = useMyProductsContext();
+
     const handleClick = () => {
         onClick(product);
-      };
+    };
 
+    const handleFav = (event) => {
+        event.preventDefault();
+        addFav(product);
+    };
+
+    // categories
     let glutenFree;
     let gluten;
     let vegetarian;
@@ -43,13 +52,15 @@ function ProductItem({ product, onClick }) {
                 <p>Brand:{product.brands}</p>
                 {/* <p>Qty:{product.quantity}</p> */}
             </IonLabel>
-            {/* end star for favorite/navigate for navigation */}
+
+            {/* FAVORITE ICON */}
             <IonButton
                 href="#"
                 slot="start"
                 // shape="round"
                 fill="clear"
                 size="large"
+                onClick={handleFav}
             >
                 <Icon
                     href="#"

@@ -3,6 +3,8 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
+        "@capacitor-community/storage-react": "^0.1.0",
+        "@capacitor/storage": "^1.2.5",
         "@ionic/react": "^6.0.0",
         "@ionic/react-router": "^6.0.0",
         "@react-google-maps/api": "^2.18.1",
