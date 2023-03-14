@@ -17,7 +17,7 @@ function ProductSearch() {
     const handleEnter = (event) => {
         if (event.key === "Enter") {
             setSpinnerShow(true);
-            console.log(event.target.value);
+            // console.log(event.target.value); // checks input
             const inputValue = event.target.value;
 
             // cors fix

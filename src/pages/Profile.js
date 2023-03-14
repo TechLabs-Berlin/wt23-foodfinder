@@ -11,8 +11,6 @@ import {
 } from "@ionic/react";
 
 const Profile = () => {
-    // When user taps on the full star the product should be eliminated from array and star changes to outline
-    // Decision to not set a dependency on useEffect so when unfavorited the product stays until refresh
     const { favorites } = useMyProductsContext();
     let [favs, setFavs] = useState([]);
 
@@ -21,7 +19,7 @@ const Profile = () => {
             return <ProductItem product={product} key={index} />;
         });
         setFavs(favList);
-    }, []);
+    }, [favorites]);
 
     return (
         <IonPage>
