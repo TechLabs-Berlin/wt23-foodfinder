@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from supabase import create_client
+import math
 import requests
 
 app = Flask(__name__)
@@ -9,27 +10,64 @@ SUPABASE_KEY = ""
 
 client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-
 @app.route('/products/', methods=['GET'])
 def respond():
-    # Retrieve the name from the url parameter /getmsg/?name=
     product_name = request.args.get("product_name", None)
 
-    # For debugging
     print(f"Received: {product_name}")
 
     url = f"https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms={product_name}"
     api_response = requests.get(url)
 
-    # Return the response in json format
     return jsonify(api_response.json())
 
 
-@app.route('/stores/', methods=['GET'])
+@app.route('/all-stores/', methods=['GET'])
 def get_stores():
     stores = client.from_('stores').select('id, store_name, longitude, latitude').execute()
     return jsonify(stores.data)
 
+# Function to calculate distance between two coordinates in km
+def applyDistanceFormula(startLat, startLng, endLat, endLng):
+    R = 6371
+
+    dLat = math.radians(endLat - startLat)
+    dLon = math.radians(endLng - startLng)
+    lat1 = math.radians(startLat)
+    lat2 = math.radians(endLat)
+
+    a = math.sin(dLat / 2) * math.sin(dLat / 2) + \
+        math.sin(dLon / 2) * math.sin(dLon / 2) * math.cos(lat1) * math.cos(lat2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    distance = R * c
+
+    return round(distance, 2)
+
+@app.route('/stores/', methods=['GET'])
+def get_nearby_stores():
+
+    lat = float(request.args.get('lat'))
+    lng = float(request.args.get('lng'))
+    radius = float(request.args.get('radius'))
+
+    # Retrieve the stores from the Supabase table
+    stores = client.from_('stores').select('id, store_name, longitude, latitude').execute()
+
+    # Get the data from the APIResponse object
+    stores_data = stores.data
+
+    # Calculate the distance from the provided coordinates to each store
+    nearby_stores = []
+    for store in stores_data:
+        distance = applyDistanceFormula(lat, lng, store['latitude'], store['longitude'])
+        if distance <= radius:
+            store['distance'] = distance
+            nearby_stores.append(store)
+
+    # Sort the nearby stores by distance
+    nearby_stores.sort(key=lambda x: x['distance'])
+
+    return jsonify(nearby_stores)
 
 @app.route('/')
 def index():
