@@ -17,11 +17,18 @@ function ProductSearch() {
     const handleEnter = (event) => {
         if (event.key === "Enter") {
             setSpinnerShow(true);
-            console.log(event.target.value);
+            // console.log(event.target.value); // checks input
             const inputValue = event.target.value;
-            // console.log(input);
+
+            // cors fix
             fetch(
-                `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${inputValue}`
+                `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${inputValue}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                }
             )
                 .then((response) => {
                     if (response.ok) {
@@ -40,16 +47,26 @@ function ProductSearch() {
 
     // console.log selected product - to be used in the API call
     useEffect(() => {
-        console.log(selectedProduct.product_name, selectedProduct.brands, selectedProduct.quantity);
-      }, [selectedProduct]);
-    
-      const handleProductClick = (product) => {
+        console.log(
+            selectedProduct.product_name,
+            selectedProduct.brands,
+            selectedProduct.quantity
+        );
+    }, [selectedProduct]);
+
+    const handleProductClick = (product) => {
         setSelectedProduct(product);
-      };
+    };
 
     //list results
     const productResults = products.map((product, index) => {
-        return <ProductItem product={product} key={index} onClick={handleProductClick}/>;
+        return (
+            <ProductItem
+                product={product}
+                key={index}
+                onClick={handleProductClick}
+            />
+        );
     });
 
     const warningChip =
