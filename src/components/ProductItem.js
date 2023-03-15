@@ -46,14 +46,8 @@ function ProductItem({ product, onClick }) {
 
     return (
         // detail: chevron button
-        <IonItem detail="true" onClick={handleClick}>
-            <IonLabel>
-                <h3>{product.product_name}</h3>
-                <p>Brand:{product.brands}</p>
-                {/* <p>Qty:{product.quantity}</p> */}
-            </IonLabel>
-
-            {/* FAVORITE ICON */}
+        <IonItem href="#" onClick={handleClick}>
+            {/* FAVORITE Button/Icon */}
             <IonButton
                 href="#"
                 slot="start"
@@ -69,6 +63,7 @@ function ProductItem({ product, onClick }) {
                     width="28"
                 ></Icon>
             </IonButton>
+
             {/*thumbnail image*/}
             <ion-thumbnail slot="start">
                 <img
@@ -80,12 +75,20 @@ function ProductItem({ product, onClick }) {
                     }
                 />
             </ion-thumbnail>
-            {gluten}
-            {glutenFree}
-            {vegetarian}
-            {vegan}
-            {allergen}
-            {warning}
+
+            {/* Information */}
+            <IonLabel>
+                <h3>{product.product_name}</h3>
+                <p>Brand:{product.brands}</p>
+                {/* <p>Qty:{product.quantity}</p> */}
+                {/* Product icons */}
+                {gluten}
+                {glutenFree}
+                {vegetarian}
+                {vegan}
+                {allergen}
+                {warning}
+            </IonLabel>
         </IonItem>
     );
 }
