@@ -41,7 +41,7 @@ function ProductItem({ product, onClick }) {
                 <Icon icon="lucide:info" color="#D65B79" />
             ) : null;
     } else {
-        warning = <Icon icon="lucide:info" color="#eee114" />;
+        warning = <Icon icon="lucide:info" color="#F2C600" />;
     }
 
     return (
@@ -62,12 +62,7 @@ function ProductItem({ product, onClick }) {
                 size="large"
                 onClick={handleFav}
             >
-                <Icon
-                    href="#"
-                    icon="ic:round-star-outline"
-                    color="#eee114"
-                    width="28"
-                ></Icon>
+                <Icon href="#" icon="ic:round-star-outline" width="28"></Icon>
             </IonButton>
             {/*thumbnail image*/}
             <ion-thumbnail slot="start">
