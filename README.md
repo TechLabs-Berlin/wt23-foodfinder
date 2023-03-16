@@ -7,40 +7,34 @@
 </p>
 
 <h5 align="center">
-  <a href="#About">About</a>  |
-  <a href="#Setup">Setup</a>  |
-  <a href="#Running">Run</a>  |
-  <a href="#Authors">Authors</a>
+  <a href="#How it works">The Foodfinder API</a> 
 </h5>
 
-## About
+## Food Finder API
 
-Our app is designed to help people in the neighborhood find the products they need at nearby stores. By using our app, you can avoid traveling long distances to find what you need and support local businesses in your community.
+This API allows you to search for products, find available products in stores, and get nearby store information.
 
-Here's what our app can do for you:
+### Routes
 
-📍 Find nearby stores: Our app uses maps to show you all the stores in your area that carry the products you're looking for.
+1. **/products/** (GET): Search for products on the OpenFoodFacts API based on a given product name.
 
-💜 Keep track of your favorites: Create a list of your favorite products to easily check their availability when you need to buy them.
+Example URL: http://localhost:5000/products?product_name=fusilli
 
-🤝 Help fellow shoppers: Scan a product and share if it's in or out of stock to help other users know before they go.
 
-We believe that building a strong sense of community starts with making everyday tasks like grocery shopping easier and more convenient. So join us today and start experiencing the benefits of a more connected neighborhood!
+2. **/available-products/** (GET): Retrieve available products from the 'product_availability_table' based on a given product name. It also returns the store details where the product is available.
 
-## Setup
+Example URL: http://localhost:5000/available-products?product_name=fusilli
 
-### `npm install`
+3. **/all-stores/** (GET): Retrieve all the stores from the 'stores' table, including their store ID, store name, longitude, and latitude.
 
-Run it in the root folder. The 'npm install' installs all modules that are listed on package.json file and their dependencies
+Example URL: http://localhost:5000/all-stores
 
-### `ionic serve`
+4. **/stores/** (GET): Retrieve nearby stores based on the provided latitude, longitude, and radius. It calculates the distance from the provided coordinates to each store and returns the stores within the specified radius.
 
-Runs the app in the development mode.\
-Open [http://localhost:8100](http://localhost:8100) to view it in your browser.
+Example URL: http://localhost:5000/stores?lat=48.1351&lng=11.5820&radius=5
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+5. **/** (GET): A welcome message to test the server and ensure it is running.
 
-## Running
+Example URL: http://localhost:5000/
 
-## Authors
+Please note that you need to replace `localhost` with the appropriate host (and port number, if different) when deploying the API on a server or hosting platform.

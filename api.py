@@ -21,6 +21,19 @@ def respond():
 
     return jsonify(api_response.json())
 
+@app.route('/available-products/', methods=['GET'])
+def get_available_products():
+    product_name = request.args.get('product_name')
+
+    query_result = (
+        client.from_("product_availability_table")
+        .select("product_name, quantity, stores:store_id(store_name, longitude, latitude)")
+        .filter("product_name", "ilike", f"%{product_name}%")
+        .filter("quantity", "gt", 0)
+        .execute()
+    )
+
+    return jsonify(query_result.data)
 
 @app.route('/all-stores/', methods=['GET'])
 def get_stores():
