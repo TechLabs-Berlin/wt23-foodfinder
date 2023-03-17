@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 import {
   GoogleMap,
-  InfoWindow,
+  //InfoWindow,
   MarkerF,
   LoadScript,
   CircleF,
@@ -74,9 +74,9 @@ export default function Maps() {
     setActiveMarker(marker);
   };
 
-  const infoWindowOnLoad = (infoWindow) => {
+  /*const infoWindowOnLoad = (infoWindow) => {
     console.log("infoWindow: ", infoWindow);
-  };
+  }; */
 
   const [markerInfo, setMarkerInfo] = useState(null);
 
