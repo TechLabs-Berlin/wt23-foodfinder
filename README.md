@@ -36,7 +36,7 @@ Local URL: http://localhost:5000/all-stores
 
 4. **/stores/** (GET): Retrieve nearby stores based on the provided latitude, longitude, and radius. It calculates the distance from the provided coordinates to each store and returns the stores within the specified radius.
 
-Live URL: https://foodfinderapi.herokuapp.com/stores?lat=48.1351&lng=11.5820&radius=5
+Live URL: https://foodfinderapi.herokuapp.com/stores/?lat=52.520008&lng=13.404954&radius=3
 
 Local URL: http://localhost:5000/stores?lat=48.1351&lng=11.5820&radius=5
 
