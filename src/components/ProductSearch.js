@@ -17,38 +17,60 @@ function ProductSearch() {
   const [spinnerShow, setSpinnerShow] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(""); //save selected product
 
-  const handleEnter = (event) => {
-    if (event.key === "Enter") {
-      setSpinnerShow(true);
-      console.log(event.target.value);
-      const inputValue = event.target.value;
-      // console.log(input);
-      fetch(
-        `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${inputValue}`
-      )
-        .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            alert("HTTP-Error: " + response.status);
-          }
-        })
-        .then((response) => {
-          setProducts(response.products);
-          console.log(response.products);
-          setSpinnerShow(false);
-        });
-    }
-  };
+    const handleEnter = (event) => {
+        if (event.key === "Enter") {
+            setSpinnerShow(true);
+            // console.log(event.target.value); // checks input
+            const inputValue = event.target.value;
 
-  // console.log selected product - to be used in the Map component
-  useEffect(() => {
-    console.log(
-      selectedProduct.product_name,
-      selectedProduct.brands,
-      selectedProduct.quantity
-    );
-  }, [selectedProduct]);
+            // cors fix
+            fetch(
+                `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${inputValue}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                }
+            )
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        alert("HTTP-Error: " + response.status);
+                    }
+                })
+                .then((response) => {
+                    setProducts(response.products);
+                    console.log(response.products);
+                    setSpinnerShow(false);
+                });
+        }
+    };
+
+    // console.log selected product - to be used in the API call
+    useEffect(() => {
+        console.log(
+            selectedProduct.product_name,
+            selectedProduct.brands,
+            selectedProduct.quantity
+        );
+    }, [selectedProduct]);
+
+    const handleProductClick = (product) => {
+        setSelectedProduct(product);
+    };
+
+    //list results
+    const productResults = products.map((product, index) => {
+        return (
+            <ProductItem
+                product={product}
+                key={index}
+                onClick={handleProductClick}
+            />
+        );
+    });
 
   const handleProductClick = (product) => {
     setSelectedProduct(product);
