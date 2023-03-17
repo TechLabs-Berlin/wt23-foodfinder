@@ -1,12 +1,13 @@
 from flask import Flask, request, jsonify
 from supabase import create_client
 import math
+import os
 import requests
 
 app = Flask(__name__)
 
-SUPABASE_URL = ""
-SUPABASE_KEY = ""
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
 
 client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
