@@ -41,9 +41,9 @@ function Provider({ children }) {
         storeFavs(updatedFavs);
     };
 
-    const deleteFav = (product) => {
-        const updatedFavs = favorites.filter((id) => {
-            return id !== product.id;
+    const deleteFav = (id) => {
+        const updatedFavs = favorites.filter((product) => {
+            return product.id !== id;
         });
         setFavorites(updatedFavs);
         storeFavs(updatedFavs);

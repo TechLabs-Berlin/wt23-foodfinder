@@ -4,15 +4,15 @@ import useMyProductsContext from "../hooks/use-products-context";
 
 function ProductItem({ product, onClick }) {
     // importing favs and handling click
-    const { addFav } = useMyProductsContext();
-
-    const handleClick = () => {
-        onClick(product);
-    };
+    const { addFav, deleteFav, favorites } = useMyProductsContext();
 
     const handleFav = (event) => {
         event.preventDefault();
-        addFav(product);
+        if (favorites.includes(product)) {
+            deleteFav(product.id);
+        } else {
+            addFav(product);
+        }
     };
 
     // categories
@@ -46,8 +46,8 @@ function ProductItem({ product, onClick }) {
 
     return (
         // detail: chevron button
-        <IonItem href="#" onClick={handleClick}>
-            {/* FAVORITE Button/Icon */}
+        <IonItem>
+            {/* STAR Button/Icon */}
             <IonButton
                 href="#"
                 slot="start"
@@ -56,7 +56,11 @@ function ProductItem({ product, onClick }) {
                 size="large"
                 onClick={handleFav}
             >
-                <Icon href="#" icon="ic:round-star-outline" width="28"></Icon>
+                <Icon
+                    icon="ic:round-star-outline"
+                    color="#eee114"
+                    width="28"
+                ></Icon>
             </IonButton>
 
             {/*thumbnail image*/}
