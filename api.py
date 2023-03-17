@@ -6,8 +6,8 @@ import requests
 
 app = Flask(__name__)
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY")
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -38,7 +38,7 @@ def get_available_products():
 
 @app.route('/all-stores/', methods=['GET'])
 def get_stores():
-    stores = client.from_('stores').select('id, store_name, longitude, latitude').execute()
+    stores = client.from_('stores').select('store_id, store_name, longitude, latitude').execute()
     return jsonify(stores.data)
 
 # Function to calculate distance between two coordinates in km
@@ -65,7 +65,7 @@ def get_nearby_stores():
     radius = float(request.args.get('radius'))
 
     # Retrieve the stores from the Supabase table
-    stores = client.from_('stores').select('id, store_name, longitude, latitude').execute()
+    stores = client.from_('stores').select('store_id, store_name, longitude, latitude').execute()
 
     # Get the data from the APIResponse object
     stores_data = stores.data
