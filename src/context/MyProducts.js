@@ -22,7 +22,6 @@ function Provider({ children }) {
     const checkFavs = async () => {
         const storedFavs = await Preferences.get({ key: "favorites" });
         const parsedFavs = JSON.parse(storedFavs.value);
-        console.log(`favs are ${parsedFavs}!`);
         return parsedFavs;
     };
 
@@ -35,15 +34,14 @@ function Provider({ children }) {
     };
 
     const addFav = (product) => {
-        console.log("ADD FAV", product);
         const updatedFavs = [...favorites, product];
         setFavorites(updatedFavs);
         storeFavs(updatedFavs);
     };
 
-    const deleteFav = (id) => {
-        const updatedFavs = favorites.filter((product) => {
-            return product.id !== id;
+    const deleteFav = (product) => {
+        const updatedFavs = favorites.filter((fav) => {
+            return fav.id !== product.id;
         });
         setFavorites(updatedFavs);
         storeFavs(updatedFavs);

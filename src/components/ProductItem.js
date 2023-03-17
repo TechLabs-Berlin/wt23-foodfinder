@@ -1,16 +1,26 @@
 import { IonItem, IonLabel, IonButton } from "@ionic/react";
 import { Icon } from "@iconify/react";
 import useMyProductsContext from "../hooks/use-products-context";
+import { useState, useEffect } from "react";
 
 function ProductItem({ product, onClick }) {
     // importing favs and handling click
     const { addFav, deleteFav, favorites } = useMyProductsContext();
+    const [starIcon, setStarIcon] = useState("ic:round-star-outline");
+
+    useEffect(() => {
+        if (favorites.some((favorite) => favorite.id === product.id)) {
+            setStarIcon("ic:round-star");
+        }
+    }, []);
 
     const handleFav = (event) => {
         event.preventDefault();
         if (favorites.includes(product)) {
-            deleteFav(product.id);
+            setStarIcon("ic:round-star-outline");
+            deleteFav(product);
         } else {
+            setStarIcon("ic:round-star");
             addFav(product);
         }
     };
@@ -56,11 +66,7 @@ function ProductItem({ product, onClick }) {
                 size="large"
                 onClick={handleFav}
             >
-                <Icon
-                    icon="ic:round-star-outline"
-                    color="#eee114"
-                    width="28"
-                ></Icon>
+                <Icon icon={starIcon} color="#eee114" width="28"></Icon>
             </IonButton>
 
             {/*thumbnail image*/}
