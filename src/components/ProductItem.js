@@ -94,20 +94,6 @@ function ProductItem({ product, onClick }) {
                 {allergen}
                 {warning}
             </IonLabel>
-
-            {/* Information */}
-            <IonLabel>
-                <h3>{product.product_name}</h3>
-                <p>Brand:{product.brands}</p>
-                {/* <p>Qty:{product.quantity}</p> */}
-                {/* Product icons */}
-                {gluten}
-                {glutenFree}
-                {vegetarian}
-                {vegan}
-                {allergen}
-                {warning}
-            </IonLabel>
         </IonItem>
     );
 }
