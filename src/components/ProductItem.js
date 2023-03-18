@@ -1,18 +1,28 @@
 import { IonItem, IonLabel, IonButton } from "@ionic/react";
 import { Icon } from "@iconify/react";
 import useMyProductsContext from "../hooks/use-products-context";
+import { useState, useEffect } from "react";
 
 function ProductItem({ product, onClick }) {
     // importing favs and handling click
-    const { addFav } = useMyProductsContext();
+    const { addFav, deleteFav, favorites } = useMyProductsContext();
+    const [starIcon, setStarIcon] = useState("ic:round-star-outline");
 
-    const handleClick = () => {
-        onClick(product);
-    };
+    useEffect(() => {
+        if (favorites.some((favorite) => favorite.id === product.id)) {
+            setStarIcon("ic:round-star");
+        }
+    }, []);
 
     const handleFav = (event) => {
         event.preventDefault();
-        addFav(product);
+        if (favorites.includes(product)) {
+            setStarIcon("ic:round-star-outline");
+            deleteFav(product);
+        } else {
+            setStarIcon("ic:round-star");
+            addFav(product);
+        }
     };
 
     // categories
@@ -45,15 +55,8 @@ function ProductItem({ product, onClick }) {
     }
 
     return (
-        // detail: chevron button
-        <IonItem detail="true" onClick={handleClick}>
-            <IonLabel>
-                <h3>{product.product_name}</h3>
-                <p>Brand:{product.brands}</p>
-                {/* <p>Qty:{product.quantity}</p> */}
-            </IonLabel>
-
-            {/* FAVORITE ICON */}
+        <IonItem href="#">
+            {/* STAR Button/Icon */}
             <IonButton
                 href="#"
                 slot="start"
@@ -62,8 +65,9 @@ function ProductItem({ product, onClick }) {
                 size="large"
                 onClick={handleFav}
             >
-                <Icon href="#" icon="ic:round-star-outline" width="28"></Icon>
+                <Icon icon={starIcon} color="#eee114" width="28"></Icon>
             </IonButton>
+
             {/*thumbnail image*/}
             <ion-thumbnail slot="start">
                 <img
@@ -75,12 +79,20 @@ function ProductItem({ product, onClick }) {
                     }
                 />
             </ion-thumbnail>
-            {gluten}
-            {glutenFree}
-            {vegetarian}
-            {vegan}
-            {allergen}
-            {warning}
+
+            {/* Information */}
+            <IonLabel>
+                <h3>{product.product_name}</h3>
+                <p>Brand:{product.brands}</p>
+                {/* <p>Qty:{product.quantity}</p> */}
+                {/* Product icons */}
+                {gluten}
+                {glutenFree}
+                {vegetarian}
+                {vegan}
+                {allergen}
+                {warning}
+            </IonLabel>
         </IonItem>
     );
 }
