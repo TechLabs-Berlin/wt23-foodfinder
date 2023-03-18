@@ -30,7 +30,7 @@ const options = {
   zIndex: 1,
 };
 
-const stores = [
+/*const stores = [
   //to be replaced with API with stores
   {
     id: 1,
@@ -52,10 +52,26 @@ const stores = [
     name: "Store 4",
     position: { lat: 52.49776, lng: 13.465974 },
   },
-];
+]; */
 
 export default function Maps() {
   const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
+  const [stores, setStores] = useState([]);
+
+  async function getAllStoreData() {
+    const response = await fetch(
+      "https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/all-stores"
+      //https://cors-anywhere.herokuapp.com/
+    );
+    const data = await response.json();
+    const stores = data.map((store) => ({
+      store_id: store.store_id,
+      store_name: store.store_name,
+      position: { lat: store.latitude, lng: store.longitude },
+    }));
+    setStores(stores);
+    console.log(stores);
+  }
 
   const fetchCoordinates = useCallback(async () => {
     const data = await getCoordinates();
@@ -64,6 +80,7 @@ export default function Maps() {
 
   useEffect(() => {
     fetchCoordinates();
+    getAllStoreData();
   }, [fetchCoordinates]);
 
   const [activeMarker, setActiveMarker] = useState(null);
@@ -74,14 +91,10 @@ export default function Maps() {
     setActiveMarker(marker);
   };
 
-  /*const infoWindowOnLoad = (infoWindow) => {
-    console.log("infoWindow: ", infoWindow);
-  }; */
-
   const [markerInfo, setMarkerInfo] = useState(null);
 
-  const showUserFeedbackScreen = (name, lat, lng) => {
-    setMarkerInfo({ name, lat, lng });
+  const showUserFeedbackScreen = (store_name, lat, lng) => {
+    setMarkerInfo({ store_name, lat, lng });
   };
 
   return (
@@ -92,31 +105,21 @@ export default function Maps() {
         center={coordinates}
         zoom={13}
       >
-        {" "}
-        {/*onClick - turns off infowindows when the map is clicked */}
-        {stores.map(({ id, name, position }) => (
+        {stores.map(({ store_id, store_name, position }) => (
           <MarkerF
-            key={id}
+            key={store_id}
             position={position}
             onClick={() => {
-              handleActiveMarker(id);
-              showUserFeedbackScreen(name, position.lat, position.lng);
+              handleActiveMarker(store_id);
+              showUserFeedbackScreen(store_name, position.lat, position.lng);
             }}
-          >
-            {/*     {activeMarker === id ? (
-  <InfoWindow onLoad={infoWindowOnLoad}>
-    <div>
-      {name}
-    </div>
-  </InfoWindow>
-     ) : null} */}
-          </MarkerF>
+          />
         ))}
         <CircleF center={coordinates} options={options} />
       </GoogleMap>
       {markerInfo && (
         <div>
-          <UserFeedbackScreen name={markerInfo.name} />
+          <UserFeedbackScreen name={markerInfo.store_name} />
         </div>
       )}
     </LoadScript>
