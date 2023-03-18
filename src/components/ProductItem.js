@@ -55,8 +55,7 @@ function ProductItem({ product, onClick }) {
     }
 
     return (
-        // detail: chevron button
-        <IonItem>
+        <IonItem href="#">
             {/* STAR Button/Icon */}
             <IonButton
                 href="#"
