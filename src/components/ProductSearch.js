@@ -61,21 +61,6 @@ function ProductSearch() {
         setSelectedProduct(product);
     };
 
-    //list results
-    const productResults = products.map((product, index) => {
-        return (
-            <ProductItem
-                product={product}
-                key={index}
-                onClick={handleProductClick}
-            />
-        );
-    });
-
-  const handleProductClick = (product) => {
-    setSelectedProduct(product);
-  };
-
   //list results
   const productResults = products.map((product, index) => {
     return (
