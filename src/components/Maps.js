@@ -17,55 +17,51 @@ const containerStyle = {
   height: "400px",
 };
 
-const options = {
-  strokeColor: "##7FFFD4",
-  strokeOpacity: 0.8,
-  strokeWeight: 0.5,
-  fillColor: "#7FFFD4",
-  fillOpacity: 0.35,
-  clickable: false,
-  draggable: false,
-  editable: false,
-  visible: true,
-  radius: 2000,
-  zIndex: 1,
+// custom icons for markers that show availability with colors
+const icons = {
+  green: {
+    icon: "http://maps.google.com/mapfiles/kml/paddle/grn-circle.png",
+  },
+  yellow: {
+    icon: "http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png",
+  },
+  red: {
+    icon: "http://maps.google.com/mapfiles/kml/paddle/stop.png",
+  },
+  white: {
+    icon: "http://maps.google.com/mapfiles/kml/paddle/wht-circle.png",
+  },
 };
-
-/*const stores = [
-  //to be replaced with API with stores
-  {
-    id: 1,
-    name: "Store 1",
-    position: { lat: 52.50403855047262, lng: 13.473260454116632 },
-  },
-  {
-    id: 2,
-    name: "Store 2",
-    position: { lat: 52.514235, lng: 13.48325 },
-  },
-  {
-    id: 3,
-    name: "Store 3",
-    position: { lat: 52.509235, lng: 13.48683 },
-  },
-  {
-    id: 4,
-    name: "Store 4",
-    position: { lat: 52.49776, lng: 13.465974 },
-  },
-]; */
 
 export default function Maps() {
   const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
   const [stores, setStores] = useState([]);
-  const [maxDistance, setMaxDistance] = useState(3);
+  const [maxDistance, setMaxDistance] = useState(2);
   console.log("maxDistance", maxDistance);
+
+  const options = {
+    strokeColor: "##7FFFD4",
+    strokeOpacity: 0,
+    strokeWeight: 0.5,
+    fillColor: "#7FFFD4",
+    fillOpacity: 0.35,
+    clickable: false,
+    draggable: false,
+    editable: false,
+    visible: true,
+    radius: maxDistance * 1000,
+    zIndex: 1,
+  };
 
   async function getStoreData() {
     const response = await fetch(
+      `https://foodfinderapi.herokuapp.com/stores/?lat=52.520008&lng=13.404954&radius=${maxDistance}`,
+      {
+        method: "GET",
+      }
       //"https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/all-stores"
       // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=${coordinates.lat}&lng=${coordinates.lng}&radius=5`
-      `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
+      // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
       //https://cors-anywhere.herokuapp.com/   open link and request temporary access to the server
     );
     const data = await response.json();
@@ -115,6 +111,7 @@ export default function Maps() {
       >
         {stores.map(({ store_id, store_name, position }) => (
           <MarkerF
+            icon={icons.green.icon}
             key={store_id}
             position={position}
             onClick={() => {
