@@ -8,6 +8,7 @@ import {
 } from "@react-google-maps/api";
 import { getCoordinates } from "../utils/geolocation";
 import UserFeedbackScreen from "./UserFeedbackScreen";
+import MaxDistanceSelector from "../components/MaxDistanceSelector";
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -57,11 +58,15 @@ const options = {
 export default function Maps() {
   const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
   const [stores, setStores] = useState([]);
+  const [maxDistance, setMaxDistance] = useState(3);
+  console.log("maxDistance", maxDistance);
 
-  async function getAllStoreData() {
+  async function getStoreData() {
     const response = await fetch(
-      "https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/all-stores"
-      //https://cors-anywhere.herokuapp.com/
+      //"https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/all-stores"
+      // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=${coordinates.lat}&lng=${coordinates.lng}&radius=5`
+      `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
+      //https://cors-anywhere.herokuapp.com/   open link and request temporary access to the server
     );
     const data = await response.json();
     const stores = data.map((store) => ({
@@ -80,8 +85,11 @@ export default function Maps() {
 
   useEffect(() => {
     fetchCoordinates();
-    getAllStoreData();
   }, [fetchCoordinates]);
+
+  useEffect(() => {
+    getStoreData();
+  }, [maxDistance]);
 
   const [activeMarker, setActiveMarker] = useState(null);
   const handleActiveMarker = (marker) => {
@@ -117,6 +125,7 @@ export default function Maps() {
         ))}
         <CircleF center={coordinates} options={options} />
       </GoogleMap>
+      <MaxDistanceSelector onChange={setMaxDistance} />
       {markerInfo && (
         <div>
           <UserFeedbackScreen name={markerInfo.store_name} />

@@ -24,6 +24,12 @@ const Stores = () => {
     const [maxDistance, setMaxDistance] = useState(1)
     console.log('maxDistance', maxDistance)
 
+    const selectedProduct = {
+        product_name: 'Selectet product name',
+        brands: 'Selected Brand',
+        quantity: '4',
+    }
+
     // const { stores } = useStoreFromAPI(maxDistance);
 
     return (

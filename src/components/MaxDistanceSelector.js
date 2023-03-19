@@ -16,7 +16,7 @@ export default function MaxDistanceSelector({ onChange }) {
         value={maxDistance}
         ticks={true}
         snaps={true}
-        min={0}
+        min={1}
         max={5}
       >
         <IonLabel slot="start">Max. distance: {maxDistance} km</IonLabel>
