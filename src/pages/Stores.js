@@ -1,6 +1,5 @@
 import Maps from '../components/Maps'
-import MaxDistanceSelector from '../components/MaxDistanceSelector'
-import ProductItem from '../components/ProductItem'
+// import ProductItem from "../components/ProductItem";
 
 import {
     IonContent,
@@ -9,26 +8,14 @@ import {
     IonTitle,
     IonToolbar,
 } from '@ionic/react'
-import { useState } from 'react'
-
-//Supabase
-// import { createClient } from '@supabase/supabase-js';
-
-// const supabaseUrl = 'https://bcdgtduoxtstjhrmcfoa.supabase.co';
-// const supabaseKey = process.env.REACT_APP_SUPABASE_KEY;
-// const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Max. distance - pass to API
+//import { useState } from 'react'
 
 const Stores = () => {
-    const [maxDistance, setMaxDistance] = useState(1)
-    console.log('maxDistance', maxDistance)
-
-    const selectedProduct = {
-        product_name: 'Selectet product name',
+    /* const selectedProduct = {
+        product_name: 'Selected product name',
         brands: 'Selected Brand',
         quantity: '4',
-    }
+    } */
 
     // const { stores } = useStoreFromAPI(maxDistance);
 
@@ -45,16 +32,15 @@ const Stores = () => {
                         <IonTitle size='large'>Tab 2</IonTitle>
                     </IonToolbar>
                 </IonHeader>
-                <ProductItem
-                    product={selectedProduct}
-                    onClick={() => {
-                        console.log('Selected item clicked')
-                    }}
-                />{' '}
+                {/* <ProductItem
+          product={selectedProduct}
+          onClick={() => {
+            console.log("Selected item clicked");
+          }}
+        />{" "} */}
                 {/*console.log can be substituted with a different function */}
                 {/* MAPS */}
                 <Maps />
-                <MaxDistanceSelector onChange={setMaxDistance} />
             </IonContent>
         </IonPage>
     )

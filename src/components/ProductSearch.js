@@ -1,87 +1,106 @@
-import ProductItem from '../components/ProductItem'
-import { useState } from 'react'
-import {
-    IonCard,
-    IonCardContent,
-    IonSearchbar,
-    IonList,
-    IonSpinner,
-} from '@ionic/react'
-import './ProductSearch.css'
+import { IonButton, IonItem, IonLabel } from '@ionic/react'
+import { Icon } from '@iconify/react'
+import useMyProductsContext from '../hooks/use-products-context'
+import { useState, useEffect } from 'react'
+import './ProductItem.css'
 
-function ProductSearch() {
-    const [products, setProducts] = useState([])
-    const [spinnerShow, setSpinnerShow] = useState(false)
+function ProductItem({ product, onClick }) {
+    // importing favs and handling click
+    const { addFav, deleteFav, favorites } = useMyProductsContext()
+    const [starIcon, setStarIcon] = useState('ic:round-star-outline')
 
-    const handleEnter = event => {
-        if (event.key === 'Enter') {
-            setSpinnerShow(true)
-            const inputValue = event.target.value
+    useEffect(() => {
+        if (favorites.some(favorite => favorite.id === product.id)) {
+            setStarIcon('ic:round-star')
+        }
+    }, [favorites, product.id])
 
-            // cors fix
-            fetch(
-                `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${inputValue}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                },
-            )
-                .then(response => {
-                    if (response.ok) {
-                        return response.json()
-                    } else {
-                        alert('HTTP-Error: ' + response.status)
-                    }
-                })
-                .then(response => {
-                    setProducts(response.products)
-                    console.log(response.products)
-                    setSpinnerShow(false)
-                })
+    const handleFav = event => {
+        event.stopPropagation()
+        event.preventDefault()
+        if (favorites.includes(product)) {
+            setStarIcon('ic:round-star-outline')
+            deleteFav(product)
+        } else {
+            setStarIcon('ic:round-star')
+            addFav(product)
         }
     }
 
-    //list results
-    const productResults = products.map((product, index) => {
-        return <ProductItem product={product} key={index} />
-    })
+    // categories
+    let glutenFree
+    let gluten
+    let vegetarian
+    let vegan
+    let allergen
+    let warning
 
-    const warningChip =
-        productResults.length > 0 ? (
-            <IonCard className='warning'>
-                <IonCardContent>
-                    <strong>Warning</strong> There is always a possibility that
-                    data about allergens may be missing, incomplete, incorrect
-                    or that the product's composition has changed. If you are
-                    allergic, always check the information on the actual product
-                    packaging.
-                </IonCardContent>
-                {/* add a closing button */}
-            </IonCard>
+    if (product.labels_tags && product.labels_tags.length > 0) {
+        glutenFree = product.labels_tags.includes('en:no-gluten') ? (
+            <Icon icon='mdi:gluten-free' color='#5bd6b7' />
         ) : null
+        gluten = !product.labels_tags.includes('en:no-gluten') ? (
+            <Icon icon='mdi:gluten' color='#D65B79' />
+        ) : null
+        vegetarian = product.labels_tags.includes('en:vegetarian') ? (
+            <Icon icon='lucide:leaf' color='#5bd6b7' />
+        ) : null
+        vegan = product.labels_tags.includes('en:vegan') ? (
+            <Icon icon='lucide:vegan' color='#5bd6b7' />
+        ) : null
+        allergen =
+            product.allergens.length > 0 ? (
+                <Icon icon='lucide:info' color='#D65B79' />
+            ) : null
+    } else {
+        warning = <Icon icon='lucide:info' color='#F2C600' />
+    }
 
     return (
-        <>
-            <IonSearchbar
-                animated={true}
-                showCancelButton='focus'
-                placeholder='Search'
-                inputMode='search'
-                onKeyDown={handleEnter}
-            ></IonSearchbar>
-            <IonList id='productList'>
-                {spinnerShow ? <IonSpinner name='dots' /> : null}
-                {warningChip}
-                {productResults}
-            </IonList>
-        </>
+        <IonItem
+            href='#'
+            routerLink={`/selectedProduct/${product.id}`}
+            routerDirection='forward'
+        >
+            {/* STAR Button/Icon */}
+            <IonButton
+                className='favoriteStar'
+                href='#'
+                slot='start'
+                onClick={handleFav}
+                fill='clear'
+            >
+                <Icon icon={starIcon} color='#eee114' width='28'></Icon>
+            </IonButton>
+
+            {/*thumbnail image*/}
+
+            <ion-thumbnail slot='start'>
+                <img
+                    alt={product.product_name}
+                    // src={product.image_front_thumb_url}
+                    src={
+                        product.image_front_small_url ||
+                        'https://static.thenounproject.com/png/3674270-200.png'
+                    }
+                />
+            </ion-thumbnail>
+
+            {/* Information */}
+            <IonLabel>
+                <h3>{product.product_name}</h3>
+                <p>Brand:{product.brands}</p>
+                {/* <p>Qty:{product.quantity}</p> */}
+                {/* Product icons */}
+                {gluten}
+                {glutenFree}
+                {vegetarian}
+                {vegan}
+                {allergen}
+                {warning}
+            </IonLabel>
+        </IonItem>
     )
 }
 
-export default ProductSearch
-
-// future improvements: according to user input in search:
-// if number search codebar
-// if string search general
+export default ProductItem
