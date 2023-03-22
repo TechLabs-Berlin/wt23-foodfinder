@@ -4,6 +4,8 @@ import {
     IonPage,
     IonTitle,
     IonToolbar,
+    IonBackButton,
+    IonButtons,
 } from "@ionic/react";
 
 const SelectedProduct = () => {
@@ -11,6 +13,9 @@ const SelectedProduct = () => {
         <IonPage>
             <IonHeader>
                 <IonToolbar>
+                    <IonButtons slot="start">
+                        <IonBackButton routerDirection="back" />
+                    </IonButtons>
                     <IonTitle>Your Product Availability</IonTitle>
                 </IonToolbar>
             </IonHeader>
