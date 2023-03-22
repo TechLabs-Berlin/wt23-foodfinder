@@ -62,7 +62,7 @@ export default function UserFeedbackScreen(props) {
 
   useEffect(() => {
     setIsOpen(true);
-  }, [props.name]);
+  }, [props]);
 
   const userFeedback = (buttonFeedback) => {
     if (buttonFeedback === "yes") {
