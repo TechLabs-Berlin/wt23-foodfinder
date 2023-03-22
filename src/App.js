@@ -36,6 +36,9 @@ import Profile from "./pages/Profile";
 import Stores from "./pages/Stores";
 import Home from "./pages/Home";
 
+// Pages
+import SelectedProduct from "./pages/SelectedProduct";
+
 setupIonicReact();
 
 const App = () => (
@@ -55,6 +58,9 @@ const App = () => (
                     </Route>
                     <Route exact path="/">
                         <Redirect to="/home" />
+                    </Route>
+                    <Route exact path="/selectedProduct">
+                        <SelectedProduct />
                     </Route>
                 </IonRouterOutlet>
                 {/* Tabs */}
