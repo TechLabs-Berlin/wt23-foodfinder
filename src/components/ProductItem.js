@@ -58,7 +58,7 @@ function ProductItem({ product, onClick }) {
     return (
         <IonItem
             href="#"
-            routerLink="/selectedProduct"
+            routerLink={`/selectedProduct/${product.id}`}
             routerDirection="forward"
         >
             {/* STAR Button/Icon */}

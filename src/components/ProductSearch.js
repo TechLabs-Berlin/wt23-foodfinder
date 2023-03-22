@@ -1,5 +1,4 @@
 import ProductItem from "../components/ProductItem";
-// import { useState, useEffect } from "react";
 import { useState } from "react";
 import {
     IonCard,
@@ -13,12 +12,10 @@ import "./ProductSearch.css";
 function ProductSearch() {
     const [products, setProducts] = useState([]);
     const [spinnerShow, setSpinnerShow] = useState(false);
-    // const [selectedProduct, setSelectedProduct] = useState(""); //save selected product
 
     const handleEnter = (event) => {
         if (event.key === "Enter") {
             setSpinnerShow(true);
-            // console.log(event.target.value); // checks input
             const inputValue = event.target.value;
 
             // cors fix
@@ -45,19 +42,6 @@ function ProductSearch() {
                 });
         }
     };
-
-    // console.log selected product - to be used in the API call
-    // useEffect(() => {
-    //     console.log(
-    //         selectedProduct.product_name,
-    //         selectedProduct.brands,
-    //         selectedProduct.quantity
-    //     );
-    // }, [selectedProduct]);
-
-    // const handleProductClick = (product) => {
-    //     setSelectedProduct(product);
-    // };
 
     //list results
     const productResults = products.map((product, index) => {
