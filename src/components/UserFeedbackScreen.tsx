@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-//import { Icon } from '@iconify/react'
+// import { Icon } from "@iconify/react";
 import {
     IonRippleEffect,
     IonButtons,
@@ -28,7 +28,6 @@ function ProductUserFeedback() {
   return (
     <div className="wrapper">
       <b>Did you find the product?</b>
-
       <div
         className="ion-activatable ripple-parent"
         onClick={() => {
@@ -38,7 +37,6 @@ function ProductUserFeedback() {
         <Icon icon="material-symbols:check" color="white" />
         <IonRippleEffect className="yes-button-ripple"></IonRippleEffect>
       </div>
-
       <div
         className="ion-activatable ripple-parent"
         onClick={() => {
@@ -62,7 +60,7 @@ export default function UserFeedbackScreen(props) {
 
     useEffect(() => {
         setIsOpen(true)
-    }, [props])
+    }, [props.name])
 
     const userFeedback = buttonFeedback => {
         if (buttonFeedback === 'yes') {
