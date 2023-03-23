@@ -16,6 +16,7 @@ function ProductItem({ product, onClick }) {
     }, [favorites, product.id])
 
     const handleFav = event => {
+        event.stopPropagation()
         event.preventDefault()
         if (favorites.includes(product)) {
             setStarIcon('ic:round-star-outline')
