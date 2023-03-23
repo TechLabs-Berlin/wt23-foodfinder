@@ -62,9 +62,10 @@ const App = () => (
                     <Route exact path="/">
                         <Redirect to="/home" />
                     </Route>
-                    <Route path={`/selectedProduct/:id`}>
-                        <SelectedProduct />
-                    </Route>
+                    <Route
+                        path={`/selectedProduct/:id`}
+                        render={(props) => <SelectedProduct {...props} />}
+                    />
                 </IonRouterOutlet>
                 {/* Tabs */}
                 <IonTabBar slot="bottom">
