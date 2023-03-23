@@ -1,7 +1,8 @@
-import { IonItem, IonLabel, IonButton } from "@ionic/react";
+import { IonItem, IonLabel } from "@ionic/react";
 import { Icon } from "@iconify/react";
 import useMyProductsContext from "../hooks/use-products-context";
 import { useState, useEffect } from "react";
+import "./ProductItem.css";
 
 function ProductItem({ product, onClick }) {
     // importing favs and handling click
@@ -55,18 +56,21 @@ function ProductItem({ product, onClick }) {
     }
 
     return (
-        <IonItem href="#">
+        <IonItem
+            href="#"
+            routerLink={`/selectedProduct/${product.id}`}
+            routerDirection="forward"
+        >
             {/* STAR Button/Icon */}
-            <IonButton
+            <Icon
+                className="favoriteStar"
                 href="#"
                 slot="start"
-                // shape="round"
-                fill="clear"
-                size="large"
                 onClick={handleFav}
-            >
-                <Icon icon={starIcon} color="#eee114" width="28"></Icon>
-            </IonButton>
+                icon={starIcon}
+                color="#eee114"
+                width="28"
+            ></Icon>
 
             {/*thumbnail image*/}
             <ion-thumbnail slot="start">

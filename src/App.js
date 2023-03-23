@@ -1,4 +1,8 @@
+// Routing imports
+import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
+// import { RouteComponentProps } from "react-router-dom";
+
 import {
     IonApp,
     IonIcon,
@@ -9,7 +13,6 @@ import {
     IonTabs,
     setupIonicReact,
 } from "@ionic/react";
-import { IonReactRouter } from "@ionic/react-router";
 import { homeSharp, personSharp, storefrontSharp } from "ionicons/icons";
 
 /* Core CSS required for Ionic components to work properly */
@@ -36,6 +39,9 @@ import Profile from "./pages/Profile";
 import Stores from "./pages/Stores";
 import Home from "./pages/Home";
 
+// Pages
+import SelectedProduct from "./pages/SelectedProduct";
+
 setupIonicReact();
 
 const App = () => (
@@ -55,6 +61,9 @@ const App = () => (
                     </Route>
                     <Route exact path="/">
                         <Redirect to="/home" />
+                    </Route>
+                    <Route path={`/selectedProduct/:id`}>
+                        <SelectedProduct />
                     </Route>
                 </IonRouterOutlet>
                 {/* Tabs */}
