@@ -8,7 +8,8 @@ import {
     IonButtons,
 } from "@ionic/react";
 
-const SelectedProduct = () => {
+const SelectedProduct = ({ match }) => {
+    console.log(match.params.id);
     return (
         <IonPage>
             <IonHeader>
@@ -19,7 +20,9 @@ const SelectedProduct = () => {
                     <IonTitle>Your Product Availability</IonTitle>
                 </IonToolbar>
             </IonHeader>
-            <IonContent></IonContent>
+            <IonContent>
+                <h1>Selected Product: {match.params.id}</h1>
+            </IonContent>
         </IonPage>
     );
 };
