@@ -1,85 +1,86 @@
-import { IonItem, IonLabel } from "@ionic/react";
-import { Icon } from "@iconify/react";
-import useMyProductsContext from "../hooks/use-products-context";
-import { useState, useEffect } from "react";
-import "./ProductItem.css";
+import { IonButton, IonItem, IonLabel } from '@ionic/react'
+import { Icon } from '@iconify/react'
+import useMyProductsContext from '../hooks/use-products-context'
+import { useState, useEffect } from 'react'
+import './ProductItem.css'
 
 function ProductItem({ product, onClick }) {
     // importing favs and handling click
-    const { addFav, deleteFav, favorites } = useMyProductsContext();
-    const [starIcon, setStarIcon] = useState("ic:round-star-outline");
+    const { addFav, deleteFav, favorites } = useMyProductsContext()
+    const [starIcon, setStarIcon] = useState('ic:round-star-outline')
 
     useEffect(() => {
-        if (favorites.some((favorite) => favorite.id === product.id)) {
-            setStarIcon("ic:round-star");
+        if (favorites.some(favorite => favorite.id === product.id)) {
+            setStarIcon('ic:round-star')
         }
-    }, []);
+    }, [favorites, product.id])
 
-    const handleFav = (event) => {
-        event.preventDefault();
+    const handleFav = event => {
+        event.preventDefault()
         if (favorites.includes(product)) {
-            setStarIcon("ic:round-star-outline");
-            deleteFav(product);
+            setStarIcon('ic:round-star-outline')
+            deleteFav(product)
         } else {
-            setStarIcon("ic:round-star");
-            addFav(product);
+            setStarIcon('ic:round-star')
+            addFav(product)
         }
-    };
+    }
 
     // categories
-    let glutenFree;
-    let gluten;
-    let vegetarian;
-    let vegan;
-    let allergen;
-    let warning;
+    let glutenFree
+    let gluten
+    let vegetarian
+    let vegan
+    let allergen
+    let warning
 
     if (product.labels_tags && product.labels_tags.length > 0) {
-        glutenFree = product.labels_tags.includes("en:no-gluten") ? (
-            <Icon icon="mdi:gluten-free" color="#5bd6b7" />
-        ) : null;
-        gluten = !product.labels_tags.includes("en:no-gluten") ? (
-            <Icon icon="mdi:gluten" color="#D65B79" />
-        ) : null;
-        vegetarian = product.labels_tags.includes("en:vegetarian") ? (
-            <Icon icon="lucide:leaf" color="#5bd6b7" />
-        ) : null;
-        vegan = product.labels_tags.includes("en:vegan") ? (
-            <Icon icon="lucide:vegan" color="#5bd6b7" />
-        ) : null;
+        glutenFree = product.labels_tags.includes('en:no-gluten') ? (
+            <Icon icon='mdi:gluten-free' color='#5bd6b7' />
+        ) : null
+        gluten = !product.labels_tags.includes('en:no-gluten') ? (
+            <Icon icon='mdi:gluten' color='#D65B79' />
+        ) : null
+        vegetarian = product.labels_tags.includes('en:vegetarian') ? (
+            <Icon icon='lucide:leaf' color='#5bd6b7' />
+        ) : null
+        vegan = product.labels_tags.includes('en:vegan') ? (
+            <Icon icon='lucide:vegan' color='#5bd6b7' />
+        ) : null
         allergen =
             product.allergens.length > 0 ? (
-                <Icon icon="lucide:info" color="#D65B79" />
-            ) : null;
+                <Icon icon='lucide:info' color='#D65B79' />
+            ) : null
     } else {
-        warning = <Icon icon="lucide:info" color="#F2C600" />;
+        warning = <Icon icon='lucide:info' color='#F2C600' />
     }
 
     return (
         <IonItem
-            href="#"
+            href='#'
             routerLink={`/selectedProduct/${product.id}`}
-            routerDirection="forward"
+            routerDirection='forward'
         >
             {/* STAR Button/Icon */}
-            <Icon
-                className="favoriteStar"
-                href="#"
-                slot="start"
+            <IonButton
+                className='favoriteStar'
+                href='#'
+                slot='start'
                 onClick={handleFav}
-                icon={starIcon}
-                color="#eee114"
-                width="28"
-            ></Icon>
+                fill='clear'
+            >
+                <Icon icon={starIcon} color='#eee114' width='28'></Icon>
+            </IonButton>
 
             {/*thumbnail image*/}
-            <ion-thumbnail slot="start">
+
+            <ion-thumbnail slot='start'>
                 <img
                     alt={product.product_name}
                     // src={product.image_front_thumb_url}
                     src={
                         product.image_front_small_url ||
-                        "https://static.thenounproject.com/png/3674270-200.png"
+                        'https://static.thenounproject.com/png/3674270-200.png'
                     }
                 />
             </ion-thumbnail>
@@ -98,7 +99,7 @@ function ProductItem({ product, onClick }) {
                 {warning}
             </IonLabel>
         </IonItem>
-    );
+    )
 }
 
-export default ProductItem;
+export default ProductItem
