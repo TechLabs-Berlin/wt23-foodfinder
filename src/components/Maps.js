@@ -1,124 +1,135 @@
-import { useEffect, useCallback, useState } from "react";
-import {
-  GoogleMap,
-  //InfoWindow,
-  MarkerF,
-  LoadScript,
-  CircleF,
-} from "@react-google-maps/api";
-import { getCoordinates } from "../utils/geolocation";
-import UserFeedbackScreen from "./UserFeedbackScreen";
+import { useEffect, useCallback, useState } from 'react'
+import { GoogleMap, MarkerF, LoadScript, CircleF } from '@react-google-maps/api'
+import { getCoordinates } from '../utils/geolocation'
+import UserFeedbackScreen from './UserFeedbackScreen'
+import MaxDistanceSelector from '../components/MaxDistanceSelector'
 
-const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
 const containerStyle = {
-  width: "100%",
-  height: "400px",
-};
+    width: '100%',
+    height: '400px',
+}
 
-const options = {
-  strokeColor: "##7FFFD4",
-  strokeOpacity: 0.8,
-  strokeWeight: 0.5,
-  fillColor: "#7FFFD4",
-  fillOpacity: 0.35,
-  clickable: false,
-  draggable: false,
-  editable: false,
-  visible: true,
-  radius: 2000,
-  zIndex: 1,
-};
-
-const stores = [
-  //to be replaced with API with stores
-  {
-    id: 1,
-    name: "Store 1",
-    position: { lat: 52.50403855047262, lng: 13.473260454116632 },
-  },
-  {
-    id: 2,
-    name: "Store 2",
-    position: { lat: 52.514235, lng: 13.48325 },
-  },
-  {
-    id: 3,
-    name: "Store 3",
-    position: { lat: 52.509235, lng: 13.48683 },
-  },
-  {
-    id: 4,
-    name: "Store 4",
-    position: { lat: 52.49776, lng: 13.465974 },
-  },
-];
+// custom icons for markers that show availability with colors
+const icons = {
+    green: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png',
+    },
+    yellow: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png',
+    },
+    red: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/stop.png',
+    },
+    white: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/wht-circle.png',
+    },
+}
 
 export default function Maps() {
-  const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
+    const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
+    const [stores, setStores] = useState([])
+    const [maxDistance, setMaxDistance] = useState(2)
+    console.log('maxDistance', maxDistance)
 
-  const fetchCoordinates = useCallback(async () => {
-    const data = await getCoordinates();
-    setCoordinates({ lat: data.coords.latitude, lng: data.coords.longitude });
-  }, []);
-
-  useEffect(() => {
-    fetchCoordinates();
-  }, [fetchCoordinates]);
-
-  const [activeMarker, setActiveMarker] = useState(null);
-  const handleActiveMarker = (marker) => {
-    if (marker === activeMarker) {
-      return;
+    const options = {
+        strokeColor: '##7FFFD4',
+        strokeOpacity: 0,
+        strokeWeight: 0.5,
+        fillColor: '#7FFFD4',
+        fillOpacity: 0.35,
+        clickable: false,
+        draggable: false,
+        editable: false,
+        visible: true,
+        radius: maxDistance * 1000,
+        zIndex: 1,
     }
-    setActiveMarker(marker);
-  };
 
-  /*const infoWindowOnLoad = (infoWindow) => {
-    console.log("infoWindow: ", infoWindow);
-  }; */
+    const fetchCoordinates = useCallback(async () => {
+        const data = await getCoordinates()
+        setCoordinates({
+            lat: data.coords.latitude,
+            lng: data.coords.longitude,
+        })
 
-  const [markerInfo, setMarkerInfo] = useState(null);
+        // call getStoreData() after the coordinates are fetched
+        getStoreData(data.coords.latitude, data.coords.longitude)
+    })
 
-  const showUserFeedbackScreen = (name, lat, lng) => {
-    setMarkerInfo({ name, lat, lng });
-  };
+    useEffect(() => {
+        fetchCoordinates()
+    }, [maxDistance])
 
-  return (
-    <LoadScript googleMapsApiKey={googleMapsApiKey}>
-      <GoogleMap
-        onClick={() => setActiveMarker(null)}
-        mapContainerStyle={containerStyle}
-        center={coordinates}
-        zoom={13}
-      >
-        {" "}
-        {/*onClick - turns off infowindows when the map is clicked */}
-        {stores.map(({ id, name, position }) => (
-          <MarkerF
-            key={id}
-            position={position}
-            onClick={() => {
-              handleActiveMarker(id);
-              showUserFeedbackScreen(name, position.lat, position.lng);
-            }}
-          >
-            {/*     {activeMarker === id ? (
-  <InfoWindow onLoad={infoWindowOnLoad}>
-    <div>
-      {name}
-    </div>
-  </InfoWindow>
-     ) : null} */}
-          </MarkerF>
-        ))}
-        <CircleF center={coordinates} options={options} />
-      </GoogleMap>
-      {markerInfo && (
-        <div>
-          <UserFeedbackScreen name={markerInfo.name} />
-        </div>
-      )}
-    </LoadScript>
-  );
+    useEffect(() => {
+        // call getStoreData() every time the coordinates or maxDistance change
+        getStoreData(coordinates.lat, coordinates.lng) //passing coordinates as arguments of the
+    }, [coordinates, maxDistance])
+
+    const [activeMarker, setActiveMarker] = useState(null)
+    const handleActiveMarker = marker => {
+        if (marker === activeMarker) {
+            return
+        }
+        setActiveMarker(marker)
+    }
+
+    const [markerInfo, setMarkerInfo] = useState(null)
+
+    const showUserFeedbackScreen = (store_name, lat, lng) => {
+        setMarkerInfo({ store_name, lat, lng })
+    }
+
+    async function getStoreData(latitude, longitude) {
+        const response = await fetch(
+            `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
+            {
+                method: 'GET',
+            },
+        )
+        // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
+        const data = await response.json()
+        const stores = data.map(store => ({
+            store_id: store.store_id,
+            store_name: store.store_name,
+            position: { lat: store.latitude, lng: store.longitude },
+        }))
+        setStores(stores)
+        console.log(stores)
+    }
+
+    return (
+        <LoadScript googleMapsApiKey={googleMapsApiKey}>
+            <GoogleMap
+                onClick={() => setActiveMarker(null)}
+                mapContainerStyle={containerStyle}
+                center={coordinates}
+                zoom={13}
+            >
+                {stores.map(({ store_id, store_name, position }) => (
+                    <MarkerF
+                        icon={icons.green.icon}
+                        key={store_id}
+                        position={position}
+                        onClick={() => {
+                            handleActiveMarker(store_id)
+                            showUserFeedbackScreen(
+                                store_name,
+                                position.lat,
+                                position.lng,
+                            )
+                        }}
+                    />
+                ))}
+                <CircleF center={coordinates} options={options} />
+            </GoogleMap>
+            <MaxDistanceSelector onChange={setMaxDistance} />
+            {markerInfo && (
+                <div>
+                    <UserFeedbackScreen name={markerInfo.store_name} />
+                </div>
+            )}
+        </LoadScript>
+    )
 }

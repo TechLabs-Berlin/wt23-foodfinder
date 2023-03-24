@@ -28,7 +28,6 @@ function ProductUserFeedback() {
   return (
     <div className="wrapper">
       <b>Did you find the product?</b>
-
       <div
         className="ion-activatable ripple-parent"
         onClick={() => {
@@ -38,7 +37,6 @@ function ProductUserFeedback() {
         <Icon icon="material-symbols:check" color="white" />
         <IonRippleEffect className="yes-button-ripple"></IonRippleEffect>
       </div>
-
       <div
         className="ion-activatable ripple-parent"
         onClick={() => {
