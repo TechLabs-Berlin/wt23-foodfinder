@@ -53,15 +53,19 @@ export default function Maps() {
             lat: data.coords.latitude,
             lng: data.coords.longitude,
         })
-    }, [])
+
+        // call getStoreData() after the coordinates are fetched
+        getStoreData(data.coords.latitude, data.coords.longitude)
+    })
 
     useEffect(() => {
         fetchCoordinates()
-    }, [])
+    }, [maxDistance])
 
     useEffect(() => {
-        getStoreData()
-    }, [fetchCoordinates, maxDistance])
+        // call getStoreData() every time the coordinates or maxDistance change
+        getStoreData(coordinates.lat, coordinates.lng) //passing coordinates as arguments of the
+    }, [coordinates, maxDistance])
 
     const [activeMarker, setActiveMarker] = useState(null)
     const handleActiveMarker = marker => {
@@ -77,14 +81,14 @@ export default function Maps() {
         setMarkerInfo({ store_name, lat, lng })
     }
 
-    async function getStoreData() {
+    async function getStoreData(latitude, longitude) {
         const response = await fetch(
-            `https://foodfinderapi.herokuapp.com/stores/?lat=${coordinates.lat}&lng=${coordinates.lng}&radius=${maxDistance}`,
+            `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
             {
                 method: 'GET',
             },
-            // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
         )
+        // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
         const data = await response.json()
         const stores = data.map(store => ({
             store_id: store.store_id,
