@@ -1,4 +1,4 @@
-import { IonItem, IonLabel } from '@ionic/react'
+import { IonButton, IonItem, IonLabel } from '@ionic/react'
 import { Icon } from '@iconify/react'
 import useMyProductsContext from '../hooks/use-products-context'
 import { useState, useEffect } from 'react'
@@ -13,9 +13,10 @@ function ProductItem({ product, onClick }) {
         if (favorites.some(favorite => favorite.id === product.id)) {
             setStarIcon('ic:round-star')
         }
-    }, [])
+    }, [favorites, product.id])
 
     const handleFav = event => {
+        event.stopPropagation()
         event.preventDefault()
         if (favorites.includes(product)) {
             setStarIcon('ic:round-star-outline')
@@ -62,17 +63,18 @@ function ProductItem({ product, onClick }) {
             routerDirection='forward'
         >
             {/* STAR Button/Icon */}
-            <Icon
+            <IonButton
                 className='favoriteStar'
                 href='#'
                 slot='start'
                 onClick={handleFav}
-                icon={starIcon}
-                color='#eee114'
-                width='28'
-            ></Icon>
+                fill='clear'
+            >
+                <Icon icon={starIcon} color='#eee114' width='28'></Icon>
+            </IonButton>
 
             {/*thumbnail image*/}
+
             <ion-thumbnail slot='start'>
                 <img
                     alt={product.product_name}
