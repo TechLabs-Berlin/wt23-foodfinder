@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
-// import { Icon } from "@iconify/react";
 import {
-    IonRippleEffect,
     IonButtons,
     IonButton,
     IonModal,
@@ -10,69 +8,45 @@ import {
     IonToolbar,
     IonTitle,
     useIonAlert,
+    IonRippleEffect,
+    IonLabel,
+    IonInput,
+    IonItem,
 } from '@ionic/react'
-
 import './main.css'
-
-// user feedback buttons yes/no
-/*
-function ProductUserFeedback() {
-  const userFeedback = (buttonFeedback) => {
-    if (buttonFeedback === "yes") {
-      console.log("Product available");
-      ProductUserFeedbackQty();
-    } else {
-      console.log("Product not available");
-    }
-  };
-  return (
-    <div className="wrapper">
-      <b>Did you find the product?</b>
-      <div
-        className="ion-activatable ripple-parent"
-        onClick={() => {
-          userFeedback("yes");
-        }}
-      >
-        <Icon icon="material-symbols:check" color="white" />
-        <IonRippleEffect className="yes-button-ripple"></IonRippleEffect>
-      </div>
-      <div
-        className="ion-activatable ripple-parent"
-        onClick={() => {
-          userFeedback("no");
-        }}
-      >
-        <Icon icon="bx:x" color="white" />
-        <IonRippleEffect className="no-button-ripple"></IonRippleEffect>
-      </div>
-    </div>
-  );
-}
-*/
-
-//overlay screen with user feedback yes/no
 
 export default function UserFeedbackScreen(props) {
     const [isOpen, setIsOpen] = useState(true)
-    const [isProductFeedbackOpen, setProductFeedbackOpen] = useState(false)
     const [presentAlert] = useIonAlert()
 
     useEffect(() => {
         setIsOpen(true)
     }, [props.name])
 
-    const userFeedback = buttonFeedback => {
-        if (buttonFeedback === 'yes') {
-            console.log('Product available')
-            setProductFeedbackOpen(true)
-        } else {
-            console.log('Product not available')
+    const handleEnter = event => {
+        if (event.key === 'Enter') {
+            event.preventDefault() // prevent form submission
+            const inputValue = event.target.value
+            console.log(inputValue) // should send response to our database
+            setTimeout(() => {
+                setIsOpen(false)
+                presentAlert({
+                    subHeader: 'Thank you for your feedback!',
+                })
+            }, 200)
         }
     }
 
-    const handleProductFeedbackClose = () => {
-        setProductFeedbackOpen(false)
+    const handleSubmit = event => {
+        event.preventDefault() // prevent form submission
+        const inputValue = event.target.quantity.value
+        console.log(inputValue) // should send response to our database
+        setTimeout(() => {
+            setIsOpen(false)
+            presentAlert({
+                subHeader: 'Thank you for your feedback!',
+            })
+        }, 200)
     }
 
     return (
@@ -89,104 +63,32 @@ export default function UserFeedbackScreen(props) {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent className='ion-padding'>
-                    <div className='wrapper'>
-                        <b>Did you find the product?</b>
-
-                        <div
-                            className='ion-activatable ripple-parent'
-                            onClick={() => {
-                                setTimeout(() => {
-                                    userFeedback('yes')
-                                    setIsOpen(false)
-                                }, 200)
-                            }}
-                        >
-                            <p>yes</p>
-                            <IonRippleEffect className='yes-button-ripple'></IonRippleEffect>
+                    <form onSubmit={handleSubmit}>
+                        <div className='wrapper'>
+                            <b>Product: {props.product_id}</b>
                         </div>
-
-                        <div
+                        <IonItem>
+                            <IonLabel>Quantity:</IonLabel>
+                            <IonInput
+                                type='number'
+                                inputmode='numeric'
+                                name='quantity'
+                                placeholder='00'
+                                autofocus={true}
+                                max={20}
+                                min={0}
+                                onKeyDown={handleEnter}
+                            />
+                        </IonItem>
+                        <br />
+                        <button
+                            type='submit'
                             className='ion-activatable ripple-parent'
-                            onClick={() => {
-                                userFeedback('no')
-                                setTimeout(() => {
-                                    setIsOpen(false)
-                                    presentAlert({
-                                        subHeader:
-                                            'Thank you for your feedback!',
-                                    })
-                                }, 200)
-                            }}
                         >
-                            <p>no</p>
-                            <IonRippleEffect className='no-button-ripple'></IonRippleEffect>
-                        </div>
-                    </div>
-                </IonContent>
-            </IonModal>
-
-            <ProductUserFeedback
-                isOpen={isProductFeedbackOpen}
-                onClose={handleProductFeedbackClose}
-            />
-        </>
-    )
-}
-
-//overlay screen with user feedback - quantity
-
-function ProductUserFeedback(props) {
-    const [presentAlert] = useIonAlert()
-    const handleBackButtonClick = () => {
-        setTimeout(() => {
-            props.onClose()
-        }, 200)
-    }
-
-    const handleQtyButtonClick = () => {
-        setTimeout(() => {
-            props.onClose()
-        }, 200)
-        setTimeout(() => {
-            presentAlert({
-                subHeader: 'Thank you for your feedback!',
-            })
-        }, 200)
-    }
-
-    return (
-        <>
-            <IonModal isOpen={props.isOpen}>
-                <IonHeader>
-                    <IonToolbar>
-                        <IonTitle></IonTitle>
-                        <IonButtons slot='end'>
-                            <IonButton onClick={handleBackButtonClick}>
-                                Close
-                            </IonButton>
-                        </IonButtons>
-                    </IonToolbar>
-                </IonHeader>
-                <IonContent>
-                    <div className='wrapper'>
-                        <b>Quantity</b>
-
-                        <div
-                            className='ion-activatable ripple-parent'
-                            onClick={handleQtyButtonClick}
-                        >
-                            <p>some</p>
-                            <IonRippleEffect className='a-few-button-ripple'></IonRippleEffect>
-                        </div>
-
-                        <div
-                            className='ion-activatable ripple-parent'
-                            onClick={handleQtyButtonClick}
-                        >
-                            <p>many</p>
-                            <IonRippleEffect className='a-lot-button-ripple'></IonRippleEffect>
-                        </div>
-                    </div>
+                            <p>Submit</p>
+                            <IonRippleEffect className='yes-button-ripple' />
+                        </button>
+                    </form>
                 </IonContent>
             </IonModal>
         </>

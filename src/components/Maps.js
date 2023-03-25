@@ -1,8 +1,9 @@
 import { useEffect, useCallback, useState } from 'react'
 import { GoogleMap, MarkerF, LoadScript, CircleF } from '@react-google-maps/api'
 import { getCoordinates } from '../utils/geolocation'
-import UserFeedbackScreen from './UserFeedbackScreen'
+import StoreInfo from './StoreInfoScreen'
 import MaxDistanceSelector from '../components/MaxDistanceSelector'
+import UserFeedbackScreen from './UserFeedbackScreen'
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
@@ -11,27 +12,14 @@ const containerStyle = {
     height: '400px',
 }
 
-// custom icons for markers that show availability with colors
-const icons = {
-    green: {
-        icon: 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png',
-    },
-    yellow: {
-        icon: 'http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png',
-    },
-    red: {
-        icon: 'http://maps.google.com/mapfiles/kml/paddle/stop.png',
-    },
-    white: {
-        icon: 'http://maps.google.com/mapfiles/kml/paddle/wht-circle.png',
-    },
-}
-
-export default function Maps() {
+export default function Maps({ page, product_id }) {
+    // selected product to be passed to the API call - waiting for API update
     const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
     const [stores, setStores] = useState([])
     const [maxDistance, setMaxDistance] = useState(2)
+    const [icons, setIcons] = useState([])
     console.log('maxDistance', maxDistance)
+    console.log(product_id)
 
     const options = {
         strokeColor: '##7FFFD4',
@@ -53,9 +41,40 @@ export default function Maps() {
             lat: data.coords.latitude,
             lng: data.coords.longitude,
         })
-
-        // call getStoreData() after the coordinates are fetched
-        getStoreData(data.coords.latitude, data.coords.longitude)
+        // setting Icons icons after coordinates are fetched
+        // showing different icons for Stores  and SelectedProduct page - useful later?
+        // - same API call and same response for both pages - showing all markers in one color in the Stores tab
+        if (page === 'Stores') {
+            // call getStoreData() after the coordinates are fetched
+            getStoreDataStores(data.coords.latitude, data.coords.longitude)
+            setIcons({
+                white: {
+                    icon: 'http://maps.google.com/mapfiles/kml/paddle/wht-circle.png',
+                },
+            })
+        } else if (page === 'SelectedProduct') {
+            getStoreDataProduct(
+                data.coords.latitude,
+                data.coords.longitude,
+                /*product*/
+            )
+            setIcons({
+                green: {
+                    icon: 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png',
+                },
+                yellow: {
+                    icon: 'http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png',
+                },
+                red: {
+                    icon: 'http://maps.google.com/mapfiles/kml/paddle/stop.png',
+                },
+                white: {
+                    icon: 'http://maps.google.com/mapfiles/kml/paddle/wht-circle.png',
+                },
+            })
+        } else {
+            console.log('Error icons')
+        }
     })
 
     useEffect(() => {
@@ -63,8 +82,13 @@ export default function Maps() {
     }, [maxDistance])
 
     useEffect(() => {
-        // call getStoreData() every time the coordinates or maxDistance change
-        getStoreData(coordinates.lat, coordinates.lng) //passing coordinates as arguments of the
+        if (page === 'Stores') {
+            // call getStoreData() every time the coordinates or maxDistance change
+            getStoreDataStores(coordinates.lat, coordinates.lng)
+        } //passing coordinates as arguments of the function
+        else if (page === 'SelectedProduct') {
+            getStoreDataProduct(coordinates.lat, coordinates.lng /*product*/)
+        }
     }, [coordinates, maxDistance])
 
     const [activeMarker, setActiveMarker] = useState(null)
@@ -81,7 +105,7 @@ export default function Maps() {
         setMarkerInfo({ store_name, lat, lng })
     }
 
-    async function getStoreData(latitude, longitude) {
+    async function getStoreDataStores(latitude, longitude) {
         const response = await fetch(
             `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
             {
@@ -89,6 +113,23 @@ export default function Maps() {
             },
         )
         // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
+        const data = await response.json()
+        const stores = data.map(store => ({
+            store_id: store.store_id,
+            store_name: store.store_name,
+            position: { lat: store.latitude, lng: store.longitude },
+        }))
+        setStores(stores)
+        console.log(stores)
+    }
+
+    async function getStoreDataProduct(latitude, longitude /*product*/) {
+        const response = await fetch(
+            `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
+            {
+                method: 'GET',
+            },
+        )
         const data = await response.json()
         const stores = data.map(store => ({
             store_id: store.store_id,
@@ -109,7 +150,7 @@ export default function Maps() {
             >
                 {stores.map(({ store_id, store_name, position }) => (
                     <MarkerF
-                        icon={icons.green.icon}
+                        icon={icons.white.icon}
                         key={store_id}
                         position={position}
                         onClick={() => {
@@ -125,9 +166,17 @@ export default function Maps() {
                 <CircleF center={coordinates} options={options} />
             </GoogleMap>
             <MaxDistanceSelector onChange={setMaxDistance} />
-            {markerInfo && (
+            {markerInfo && page === 'Stores' && (
                 <div>
-                    <UserFeedbackScreen name={markerInfo.store_name} />
+                    <StoreInfo name={markerInfo.store_name} />
+                </div>
+            )}
+            {markerInfo && page === 'SelectedProduct' && (
+                <div>
+                    <UserFeedbackScreen
+                        name={markerInfo.store_name}
+                        product_id={product_id}
+                    />
                 </div>
             )}
         </LoadScript>
