@@ -12,6 +12,9 @@ import './ProductSearch.css'
 function ProductSearch() {
     const [products, setProducts] = useState([])
     const [spinnerShow, setSpinnerShow] = useState(false)
+    const [resultChips, setResultChips] = useState('')
+
+    let alertChips
 
     const handleEnter = event => {
         if (event.key === 'Enter') {
@@ -39,6 +42,9 @@ function ProductSearch() {
                     setProducts(response.products)
                     console.log(response.products)
                     setSpinnerShow(false)
+                    if (response.products.length === 0) {
+                        setResultChips('empty')
+                    } else setResultChips('full')
                 })
         }
     }
@@ -48,8 +54,8 @@ function ProductSearch() {
         return <ProductItem product={product} key={index} />
     })
 
-    const warningChip =
-        productResults.length > 0 ? (
+    if (resultChips === 'full') {
+        alertChips = (
             <IonCard className='warning'>
                 <IonCardContent>
                     <strong>Warning</strong> There is always a possibility that
@@ -60,7 +66,19 @@ function ProductSearch() {
                 </IonCardContent>
                 {/* add a closing button */}
             </IonCard>
-        ) : null
+        )
+    } else if (resultChips === 'empty') {
+        alertChips = (
+            <IonCard className='warningEmpty'>
+                <IonCardContent>
+                    <strong>
+                        No results for your search, try another keyword
+                    </strong>
+                </IonCardContent>
+                {/* add a closing button */}
+            </IonCard>
+        )
+    }
 
     return (
         <>
@@ -73,7 +91,7 @@ function ProductSearch() {
             ></IonSearchbar>
             <IonList id='productList'>
                 {spinnerShow ? <IonSpinner name='dots' /> : null}
-                {warningChip}
+                {alertChips}
                 {productResults}
             </IonList>
         </>

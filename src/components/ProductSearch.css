@@ -4,3 +4,10 @@
     background-color: #fffacd;
     border: 2px solid #fff599;
 }
+
+.warningEmpty {
+    border-radius: 4px;
+    color: black;
+    background-color: #ffcdcd;
+    border: 2px solid #ff9999;
+}
