@@ -2,11 +2,15 @@ import ProductItem from '../components/ProductItem'
 import { useState } from 'react'
 import {
     IonCard,
+    IonIcon,
     IonCardContent,
     IonSearchbar,
     IonList,
     IonSpinner,
+    IonButton,
 } from '@ionic/react'
+import { close } from 'ionicons/icons'
+
 import './ProductSearch.css'
 
 function ProductSearch() {
@@ -56,7 +60,7 @@ function ProductSearch() {
 
     if (resultChips === 'full') {
         alertChips = (
-            <IonCard className='warning'>
+            <IonCard className='chipWarning'>
                 <IonCardContent>
                     <strong>Warning</strong> There is always a possibility that
                     data about allergens may be missing, incomplete, incorrect
@@ -64,18 +68,30 @@ function ProductSearch() {
                     allergic, always check the information on the actual product
                     packaging.
                 </IonCardContent>
-                {/* add a closing button */}
+                <IonButton
+                    className='closeButton'
+                    fill='clear'
+                    onClick={() => setResultChips('')}
+                >
+                    <IonIcon aria-hidden='true' icon={close} />
+                </IonButton>
             </IonCard>
         )
     } else if (resultChips === 'empty') {
         alertChips = (
-            <IonCard className='warningEmpty'>
+            <IonCard className='chipError'>
                 <IonCardContent>
                     <strong>
                         No results for your search, try another keyword
                     </strong>
                 </IonCardContent>
-                {/* add a closing button */}
+                <IonButton
+                    className='closeButton'
+                    fill='clear'
+                    onClick={() => setResultChips('')}
+                >
+                    <IonIcon aria-hidden='true' icon={close} />
+                </IonButton>{' '}
             </IonCard>
         )
     }

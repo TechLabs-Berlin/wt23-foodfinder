@@ -1,13 +1,22 @@
-.warning {
+.chipWarning,
+.chipError {
     border-radius: 4px;
     color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chipWarning {
     background-color: #fffacd;
     border: 2px solid #fff599;
 }
 
-.warningEmpty {
-    border-radius: 4px;
-    color: black;
+.chipError {
     background-color: #ffcdcd;
     border: 2px solid #ff9999;
+}
+
+.closeButton {
+    color: black;
 }
