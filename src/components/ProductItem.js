@@ -1,4 +1,4 @@
-import { IonButton, IonItem, IonLabel } from '@ionic/react'
+import { IonButton, IonItem, IonLabel, IonThumbnail } from '@ionic/react'
 import { Icon } from '@iconify/react'
 import useMyProductsContext from '../hooks/use-products-context'
 import { useState, useEffect } from 'react'
@@ -59,7 +59,7 @@ function ProductItem({ product, onClick }) {
     return (
         <IonItem
             href='#'
-            routerLink={`/selectedProduct/${product.id}`}
+            routerLink={`/selectedProduct/${product.id}/${product.product_name}/${product.brands}`}
             routerDirection='forward'
         >
             {/* STAR Button/Icon */}
@@ -70,12 +70,12 @@ function ProductItem({ product, onClick }) {
                 onClick={handleFav}
                 fill='clear'
             >
-                <Icon icon={starIcon} color='#eee114' width='28'></Icon>
+                <Icon icon={starIcon} color='#eee114' width='28' />
             </IonButton>
 
             {/*thumbnail image*/}
 
-            <ion-thumbnail slot='start'>
+            <IonThumbnail slot='start'>
                 <img
                     alt={product.product_name}
                     // src={product.image_front_thumb_url}
@@ -84,14 +84,12 @@ function ProductItem({ product, onClick }) {
                         'https://static.thenounproject.com/png/3674270-200.png'
                     }
                 />
-            </ion-thumbnail>
+            </IonThumbnail>
 
             {/* Information */}
             <IonLabel>
                 <h3>{product.product_name}</h3>
                 <p>Brand:{product.brands}</p>
-                {/* <p>Qty:{product.quantity}</p> */}
-                {/* Product icons */}
                 {gluten}
                 {glutenFree}
                 {vegetarian}
