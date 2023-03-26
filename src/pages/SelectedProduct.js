@@ -24,7 +24,7 @@ const SelectedProduct = ({ match }) => {
                     <IonTitle>
                         {/* Availability for */}
                         {match.params.product_name}
-                        {/* <strong> {match.params.brands}</strong> */}
+                        <strong> {match.params.brands}</strong>
                     </IonTitle>
                 </IonToolbar>
             </IonHeader>
