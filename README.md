@@ -40,10 +40,24 @@ Live URL: https://foodfinderapi.herokuapp.com/stores/?lat=52.520008&lng=13.40495
 
 Local URL: http://localhost:5000/stores?lat=48.1351&lng=11.5820&radius=5
 
-5. **/** (GET): A welcome message to test the server and ensure it is running.
+5. **/stores-with-products/** (GET): Retrieve nearby stores based on the provided latitude, longitude, and radius, along with available products matching the given product code or product name. If the product code is not found, it will search for the product name. Stores within the specified radius will be returned, and the available products will be added to the corresponding stores.
+
+Live URL:  https://foodfinderapi.herokuapp.com/stores-with-products/?lat=52.520008&lng=13.404954&radius=100&product_code=1234565787&product_name=Hafer
+
+Local URL: http://localhost:5000/stores-with-products/?lat=52.520008&lng=13.404954&radius=100&product_code=1234565787&product_name=Hafer
+
+6. **/stores-with-all-products/** (GET): Retrieve nearby stores based on the provided latitude, longitude, and radius, along with all available products in each store. Stores within the specified radius will be returned, and the available products will be added to the corresponding stores.
+Example:
+
+Live URL: https://foodfinderapi.herokuapp.com/stores-with-all-products/?lat=52.520008&lng=13.404954&radius=3
+
+Local URL: http://localhost:5000/stores-with-all-products?lat=52.520008&lng=13.404954&radius=3
+
+7. **/** (GET): A welcome message to test the server and ensure it is running.
 
 Live URL: https://foodfinderapi.herokuapp.com/
 
 Local URL: http://localhost:5000/
+
 
 Please note that you need to replace `localhost` with the appropriate host (and port number, if different) when deploying the API on a server or hosting platform.

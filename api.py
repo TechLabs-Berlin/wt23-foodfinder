@@ -85,6 +85,93 @@ def get_nearby_stores():
 
     return jsonify(nearby_stores)
 
+@app.route('/stores-with-products/', methods=['GET'])
+def get_stores_with_products():
+    lat = float(request.args.get('lat'))
+    lng = float(request.args.get('lng'))
+    radius = float(request.args.get('radius'))
+    product_code = request.args.get('product_code', None)
+    product_name = request.args.get('product_name', None)
+
+    # Get nearby stores
+    stores = client.from_('stores').select('store_id, store_name, longitude, latitude').execute()
+    stores_data = stores.data
+
+    nearby_stores = []
+    for store in stores_data:
+        distance = applyDistanceFormula(lat, lng, store['latitude'], store['longitude'])
+        if distance <= radius:
+            store['distance'] = distance
+            store['products'] = []
+            nearby_stores.append(store)
+
+    if product_code:
+        query_result = (
+            client.from_("product_availability_table")
+            .select("store_id, product_code, product_name, quantity, brand, category, description")
+            .filter("product_code", "eq", product_code)
+            .execute()
+        )
+        if not query_result.data and product_name:
+            query_result = (
+                client.from_("product_availability_table")
+                .select("store_id, product_code, product_name, quantity, brand, category, description")
+                .filter("product_name", "ilike", f"%{product_name}%")
+                .execute()
+            )
+    else:
+        query_result = (
+            client.from_("product_availability_table")
+            .select("store_id, product_code, product_name, quantity, brand, category, description")
+            .filter("product_name", "ilike", f"%{product_name}%")
+            .execute()
+        )
+
+    products_data = query_result.data
+
+    for product in products_data:
+        for store in nearby_stores:
+            if store['store_id'] == product['store_id']:
+                store['products'].append(product)
+                break
+
+    return jsonify(nearby_stores)
+
+
+@app.route('/stores-with-all-products/', methods=['GET'])
+def get_stores_with_all_products():
+    lat = float(request.args.get('lat'))
+    lng = float(request.args.get('lng'))
+    radius = float(request.args.get('radius'))
+
+    # Retrieve the stores and their available products from the database
+    query_result = (
+        client.from_("stores")
+        .select(
+            "store_id, store_name, longitude, latitude, "
+            "product_availability:store_id("
+            "product_code, product_name, quantity, brand, category, description)"
+        )
+        .execute()
+    )
+
+    stores_data = query_result.data
+
+    # Calculate the distance from the provided coordinates to each store
+    nearby_stores = []
+    for store in stores_data:
+        distance = applyDistanceFormula(lat, lng, store['latitude'], store['longitude'])
+        if distance <= radius:
+            store['distance'] = distance
+            nearby_stores.append(store)
+
+    # Sort the nearby stores by distance
+    nearby_stores.sort(key=lambda x: x['distance'])
+
+    # Return the nearby stores and their available products as JSON
+    return jsonify(nearby_stores)
+
+
 @app.route('/')
 def index():
     # A welcome message to test our server
