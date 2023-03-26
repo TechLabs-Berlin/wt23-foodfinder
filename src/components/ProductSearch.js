@@ -2,16 +2,23 @@ import ProductItem from '../components/ProductItem'
 import { useState } from 'react'
 import {
     IonCard,
+    IonIcon,
     IonCardContent,
     IonSearchbar,
     IonList,
     IonSpinner,
+    IonButton,
 } from '@ionic/react'
+import { close } from 'ionicons/icons'
+
 import './ProductSearch.css'
 
 function ProductSearch() {
     const [products, setProducts] = useState([])
     const [spinnerShow, setSpinnerShow] = useState(false)
+    const [resultChips, setResultChips] = useState('')
+
+    let alertChips
 
     const handleEnter = event => {
         if (event.key === 'Enter') {
@@ -39,6 +46,9 @@ function ProductSearch() {
                     setProducts(response.products)
                     console.log(response.products)
                     setSpinnerShow(false)
+                    if (response.products.length === 0) {
+                        setResultChips('empty')
+                    } else setResultChips('full')
                 })
         }
     }
@@ -48,9 +58,9 @@ function ProductSearch() {
         return <ProductItem product={product} key={index} />
     })
 
-    const warningChip =
-        productResults.length > 0 ? (
-            <IonCard className='warning'>
+    if (resultChips === 'full') {
+        alertChips = (
+            <IonCard className='chipWarning'>
                 <IonCardContent>
                     <strong>Warning</strong> There is always a possibility that
                     data about allergens may be missing, incomplete, incorrect
@@ -58,9 +68,33 @@ function ProductSearch() {
                     allergic, always check the information on the actual product
                     packaging.
                 </IonCardContent>
-                {/* add a closing button */}
+                <IonButton
+                    className='closeButton'
+                    fill='clear'
+                    onClick={() => setResultChips('')}
+                >
+                    <IonIcon aria-hidden='true' icon={close} />
+                </IonButton>
             </IonCard>
-        ) : null
+        )
+    } else if (resultChips === 'empty') {
+        alertChips = (
+            <IonCard className='chipError'>
+                <IonCardContent>
+                    <strong>
+                        No results for your search, try another keyword
+                    </strong>
+                </IonCardContent>
+                <IonButton
+                    className='closeButton'
+                    fill='clear'
+                    onClick={() => setResultChips('')}
+                >
+                    <IonIcon aria-hidden='true' icon={close} />
+                </IonButton>{' '}
+            </IonCard>
+        )
+    }
 
     return (
         <>
@@ -73,7 +107,7 @@ function ProductSearch() {
             ></IonSearchbar>
             <IonList id='productList'>
                 {spinnerShow ? <IonSpinner name='dots' /> : null}
-                {warningChip}
+                {alertChips}
                 {productResults}
             </IonList>
         </>
