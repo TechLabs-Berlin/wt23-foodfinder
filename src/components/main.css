@@ -31,8 +31,10 @@ b {
 
 .ripple-parent {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
 
     position: relative;
     overflow: hidden;
@@ -42,14 +44,18 @@ b {
     user-select: none;
 
     width: 100%;
-    height: 50px;
+    height: 75px;
     border-radius: 8px;
 }
 
-.yes-button-ripple {
+.many-button-ripple {
     color: #1ede5e;
 }
 
 .no-button-ripple {
     color: #ce1a1a;
+}
+
+.some-button-ripple {
+    color: #ffd000;
 }

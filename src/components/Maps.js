@@ -27,7 +27,7 @@ const icons = {
     },
 }
 
-export default function Maps({ page, product_id }) {
+export default function Maps({ page, product_id, product_name }) {
     // selected product to be passed to the API call - waiting for API update
     const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
     const [stores, setStores] = useState([])
@@ -55,7 +55,6 @@ export default function Maps({ page, product_id }) {
             lat: data.coords.latitude,
             lng: data.coords.longitude,
         })
-        // setting Icons icons after coordinates are fetched
         // showing different icons for Stores  and SelectedProduct page - useful later?
         // - same API call and same response for both pages - showing all markers in one color in the Stores tab
         if (page === 'Stores') {
@@ -65,6 +64,7 @@ export default function Maps({ page, product_id }) {
             getStoreDataProduct(
                 data.coords.latitude,
                 data.coords.longitude,
+                product_id,
                 /*product*/
             )
         } else {
@@ -82,7 +82,7 @@ export default function Maps({ page, product_id }) {
             getStoreDataStores(coordinates.lat, coordinates.lng)
         } //passing coordinates as arguments of the function
         else if (page === 'SelectedProduct') {
-            getStoreDataProduct(coordinates.lat, coordinates.lng /*product*/)
+            getStoreDataProduct(coordinates.lat, coordinates.lng, product_id)
         }
     }, [coordinates, maxDistance])
 
@@ -107,7 +107,6 @@ export default function Maps({ page, product_id }) {
                 method: 'GET',
             },
         )
-        // `https://cors-anywhere.herokuapp.com/foodfinderapi.herokuapp.com:443/stores/?lat=52.52000&lng=13.404954&radius=${maxDistance}` //lat lng for testing
         const data = await response.json()
         const stores = data.map(store => ({
             store_id: store.store_id,
@@ -118,9 +117,15 @@ export default function Maps({ page, product_id }) {
         console.log(stores)
     }
 
-    async function getStoreDataProduct(latitude, longitude /*product*/) {
+    async function getStoreDataProduct(
+        latitude,
+        longitude,
+        product_id,
+        //   product_name,
+    ) {
         const response = await fetch(
-            `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
+            // `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
+            `https://foodfinderapi.herokuapp.com/stores-with-products/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}&product_code=${product_id}&product_name=${null}`,
             {
                 method: 'GET',
             },
@@ -129,6 +134,7 @@ export default function Maps({ page, product_id }) {
         const stores = data.map(store => ({
             store_id: store.store_id,
             store_name: store.store_name,
+            //  product_id: // how to get it?
             position: { lat: store.latitude, lng: store.longitude },
         }))
         setStores(stores)

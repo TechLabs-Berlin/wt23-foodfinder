@@ -9,9 +9,6 @@ import {
     IonTitle,
     useIonAlert,
     IonRippleEffect,
-    IonLabel,
-    IonInput,
-    IonItem,
 } from '@ionic/react'
 import './main.css'
 
@@ -23,24 +20,8 @@ export default function UserFeedbackScreen(props) {
         setIsOpen(true)
     }, [props.name])
 
-    const handleEnter = event => {
-        if (event.key === 'Enter') {
-            event.preventDefault() // prevent form submission
-            const inputValue = event.target.value
-            console.log(inputValue) // should send response to our database
-            setTimeout(() => {
-                setIsOpen(false)
-                presentAlert({
-                    subHeader: 'Thank you for your feedback!',
-                })
-            }, 200)
-        }
-    }
-
-    const handleSubmit = event => {
-        event.preventDefault() // prevent form submission
-        const inputValue = event.target.quantity.value
-        console.log(inputValue) // should send response to our database
+    function buttonSubmit(quantity) {
+        console.log(quantity) // to do: sending quantity feedback to the database
         setTimeout(() => {
             setIsOpen(false)
             presentAlert({
@@ -63,32 +44,31 @@ export default function UserFeedbackScreen(props) {
                     </IonToolbar>
                 </IonHeader>
                 <IonContent className='ion-padding'>
-                    <form onSubmit={handleSubmit}>
-                        <div className='wrapper'>
-                            <b>Product: {props.product_id}</b>
-                        </div>
-                        <IonItem>
-                            <IonLabel>Quantity:</IonLabel>
-                            <IonInput
-                                type='number'
-                                inputmode='numeric'
-                                name='quantity'
-                                placeholder='00'
-                                autofocus={true}
-                                max={20}
-                                min={0}
-                                onKeyDown={handleEnter}
-                            />
-                        </IonItem>
-                        <br />
-                        <button
-                            type='submit'
-                            className='ion-activatable ripple-parent'
-                        >
-                            <p>Submit</p>
-                            <IonRippleEffect className='yes-button-ripple' />
-                        </button>
-                    </form>
+                    <div className='wrapper'>
+                        <b>Did you find the product?</b>
+                        <b>ID: {props.product_id}</b>
+                    </div>
+                    <div
+                        className='ion-activatable ripple-parent'
+                        onClick={() => buttonSubmit(0)}
+                    >
+                        <p>no</p>
+                        <IonRippleEffect className='no-button-ripple' />
+                    </div>
+                    <div
+                        className='ion-activatable ripple-parent'
+                        onClick={() => buttonSubmit(5)}
+                    >
+                        <p>some</p>
+                        <IonRippleEffect className='some-button-ripple' />
+                    </div>
+                    <div
+                        className='ion-activatable ripple-parent'
+                        onClick={() => buttonSubmit(10)}
+                    >
+                        <p>many</p>
+                        <IonRippleEffect className='many-button-ripple' />
+                    </div>
                 </IonContent>
             </IonModal>
         </>
