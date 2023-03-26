@@ -12,16 +12,30 @@ const containerStyle = {
     height: '400px',
 }
 
+const icons = {
+    green: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png',
+    },
+    yellow: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png',
+    },
+    red: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/stop.png',
+    },
+    white: {
+        icon: 'http://maps.google.com/mapfiles/kml/paddle/wht-circle.png',
+    },
+}
+
 export default function Maps({ page, product_id }) {
     // selected product to be passed to the API call - waiting for API update
     const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
     const [stores, setStores] = useState([])
     const [maxDistance, setMaxDistance] = useState(2)
-    const [icons, setIcons] = useState([])
     console.log('maxDistance', maxDistance)
     console.log(product_id)
 
-    const options = {
+    const mapCircleOptions = {
         strokeColor: '##7FFFD4',
         strokeOpacity: 0,
         strokeWeight: 0.5,
@@ -47,33 +61,14 @@ export default function Maps({ page, product_id }) {
         if (page === 'Stores') {
             // call getStoreData() after the coordinates are fetched
             getStoreDataStores(data.coords.latitude, data.coords.longitude)
-            setIcons({
-                white: {
-                    icon: 'http://maps.google.com/mapfiles/kml/paddle/wht-circle.png',
-                },
-            })
         } else if (page === 'SelectedProduct') {
             getStoreDataProduct(
                 data.coords.latitude,
                 data.coords.longitude,
                 /*product*/
             )
-            setIcons({
-                green: {
-                    icon: 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png',
-                },
-                yellow: {
-                    icon: 'http://maps.google.com/mapfiles/kml/paddle/ylw-circle.png',
-                },
-                red: {
-                    icon: 'http://maps.google.com/mapfiles/kml/paddle/stop.png',
-                },
-                white: {
-                    icon: 'http://maps.google.com/mapfiles/kml/paddle/wht-circle.png',
-                },
-            })
         } else {
-            console.log('Error icons')
+            console.log('Error')
         }
     })
 
@@ -163,7 +158,7 @@ export default function Maps({ page, product_id }) {
                         }}
                     />
                 ))}
-                <CircleF center={coordinates} options={options} />
+                <CircleF center={coordinates} options={mapCircleOptions} />
             </GoogleMap>
             <MaxDistanceSelector onChange={setMaxDistance} />
             {markerInfo && page === 'Stores' && (
