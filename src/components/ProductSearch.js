@@ -6,7 +6,7 @@ import {
     IonCardContent,
     IonSearchbar,
     IonList,
-    IonSpinner,
+    IonProgressBar,
     IonButton,
 } from '@ionic/react'
 import { close } from 'ionicons/icons'
@@ -106,7 +106,9 @@ function ProductSearch() {
                 onKeyDown={handleEnter}
             ></IonSearchbar>
             <IonList id='productList'>
-                {spinnerShow ? <IonSpinner name='dots' /> : null}
+                {spinnerShow ? (
+                    <IonProgressBar type='indeterminate'></IonProgressBar>
+                ) : null}
                 {alertChips}
                 {productResults}
             </IonList>
