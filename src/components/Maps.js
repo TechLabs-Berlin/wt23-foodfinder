@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState } from 'react'
-import { GoogleMap, MarkerF, LoadScript, CircleF } from '@react-google-maps/api'
+import { GoogleMap, MarkerF, CircleF } from '@react-google-maps/api'
 import { getCoordinates } from '../utils/geolocation'
 import StoreInfo from './StoreInfoScreen'
 import MaxDistanceSelector from '../components/MaxDistanceSelector'
@@ -142,7 +142,7 @@ export default function Maps({ page, product_id, product_name }) {
     }
 
     return (
-        <LoadScript googleMapsApiKey={googleMapsApiKey}>
+        <>
             <GoogleMap
                 onClick={() => setActiveMarker(null)}
                 mapContainerStyle={containerStyle}
@@ -180,6 +180,6 @@ export default function Maps({ page, product_id, product_name }) {
                     />
                 </div>
             )}
-        </LoadScript>
+        </>
     )
 }
