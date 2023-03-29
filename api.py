@@ -8,8 +8,8 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-SUPABASE_URL = "https://bcdgtduoxtstjhrmcfoa.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZGd0ZHVveHRzdGpocm1jZm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzczNDI2OTcsImV4cCI6MTk5MjkxODY5N30.wqlmMraSTr9n7f0jzHGy_P37mSdXfPibGHXOIKY1CLk"
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
 
 client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
