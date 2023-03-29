@@ -8,8 +8,8 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+SUPABASE_URL = "https://bcdgtduoxtstjhrmcfoa.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZGd0ZHVveHRzdGpocm1jZm9hIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzczNDI2OTcsImV4cCI6MTk5MjkxODY5N30.wqlmMraSTr9n7f0jzHGy_P37mSdXfPibGHXOIKY1CLk"
 
 client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
@@ -171,6 +171,21 @@ def get_stores_with_all_products():
     # Return the nearby stores and their available products as JSON
     return jsonify(nearby_stores)
 
+@app.route('/update-quantity/', methods=['POST'])
+def update_quantity():
+    store_id = request.args.get('store_id')
+    product_code = request.args.get('product_code')
+    new_quantity = request.args.get('new_quantity')
+
+    if store_id and product_code and new_quantity is not None:
+        client.from_("product_availability_table") \
+            .update({"quantity": new_quantity}) \
+            .filter("store_id", "eq", store_id) \
+            .filter("product_code", "eq", product_code) \
+            .execute()
+        return "Quantity updated successfully!", 200
+    else:
+        return "Error: store_id, product_code, and new_quantity are required.", 400
 
 @app.route('/')
 def index():

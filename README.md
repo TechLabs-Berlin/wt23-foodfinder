@@ -53,11 +53,17 @@ Live URL: https://foodfinderapi.herokuapp.com/stores-with-all-products/?lat=52.5
 
 Local URL: http://localhost:5000/stores-with-all-products?lat=52.520008&lng=13.404954&radius=3
 
-7. **/** (GET): A welcome message to test the server and ensure it is running.
+7. **/update-quantity/** (POST): Update the quantity of a specific product in a specific store. Provide the store_id, product_code, and the new_quantity as parameters.
+Example:
+
+Live URL: https://foodfinderapi.herokuapp.com/update-quantity?store_id=1&product_code=123456789&new_quantity=10
+
+Local URL: http://localhost:5000/update-quantity?store_id=1&product_code=123456789&new_quantity=10
+
+8. **/** (GET): A welcome message to test the server and ensure it is running.
 
 Live URL: https://foodfinderapi.herokuapp.com/
 
 Local URL: http://localhost:5000/
-
 
 Please note that you need to replace `localhost` with the appropriate host (and port number, if different) when deploying the API on a server or hosting platform.
