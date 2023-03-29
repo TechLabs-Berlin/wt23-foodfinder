@@ -44,6 +44,8 @@ import SelectedProduct from './pages/SelectedProduct'
 
 setupIonicReact()
 
+const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+
 const App = () => (
     <IonApp>
         <IonReactRouter>
