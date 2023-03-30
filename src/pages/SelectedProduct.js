@@ -37,7 +37,11 @@ const SelectedProduct = ({ match }) => {
                         </h3>
                     </IonLabel>
                 </IonChip> */}
-                <Maps page='SelectedProduct' product_id={match.params.id} />
+                <Maps
+                    page='SelectedProduct'
+                    product_id={match.params.id}
+                    product_name={match.params.product_name}
+                />
             </IonContent>
         </IonPage>
     )

@@ -21,7 +21,14 @@ export default function UserFeedbackScreen(props) {
     }, [props.name])
 
     function buttonSubmit(quantity) {
-        console.log(quantity) // to do: sending quantity feedback to the database
+        console.log(
+            'Quantity: ',
+            quantity,
+            'Product ID: ',
+            props.product_id,
+            'Store ID: ',
+            props.store_id,
+        ) // to do: sending quantity and product id feedback to the database
         setTimeout(() => {
             setIsOpen(false)
             presentAlert({
@@ -46,7 +53,6 @@ export default function UserFeedbackScreen(props) {
                 <IonContent className='ion-padding'>
                     <div className='wrapper'>
                         <b>Did you find the product?</b>
-                        <b>ID: {props.product_id}</b>
                     </div>
                     <div
                         className='ion-activatable ripple-parent'

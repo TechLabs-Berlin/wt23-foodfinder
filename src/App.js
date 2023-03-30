@@ -1,7 +1,7 @@
 // Routing imports
 import { IonReactRouter } from '@ionic/react-router'
 import { Redirect, Route } from 'react-router-dom'
-// import { RouteComponentProps } from "react-router-dom";
+import { LoadScript } from '@react-google-maps/api'
 
 import {
     IonApp,
@@ -44,28 +44,32 @@ import SelectedProduct from './pages/SelectedProduct'
 
 setupIonicReact()
 
+const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+
 const App = () => (
     <IonApp>
         <IonReactRouter>
             <IonTabs>
                 {/* Routes */}
                 <IonRouterOutlet>
-                    <Route exact path='/home'>
-                        <Home />
-                    </Route>
-                    <Route exact path='/stores'>
-                        <Stores />
-                    </Route>
-                    <Route path='/profile'>
-                        <Profile />
-                    </Route>
-                    <Route exact path='/'>
-                        <Redirect to='/home' />
-                    </Route>
-                    <Route
-                        path={`/selectedProduct/:id/:product_name/:brands`}
-                        render={props => <SelectedProduct {...props} />}
-                    />
+                    <LoadScript googleMapsApiKey={googleMapsApiKey}>
+                        <Route exact path='/home'>
+                            <Home />
+                        </Route>
+                        <Route exact path='/stores'>
+                            <Stores />
+                        </Route>
+                        <Route path='/profile'>
+                            <Profile />
+                        </Route>
+                        <Route exact path='/'>
+                            <Redirect to='/home' />
+                        </Route>
+                        <Route
+                            path={`/selectedProduct/:id/:product_name/:brands`}
+                            render={props => <SelectedProduct {...props} />}
+                        />
+                    </LoadScript>
                 </IonRouterOutlet>
                 {/* Tabs */}
                 <IonTabBar slot='bottom'>
