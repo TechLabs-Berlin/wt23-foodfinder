@@ -14,7 +14,7 @@ const containerStyle = {
 
 const icons = {
     user: {
-        icon: 'http://maps.google.com/mapfiles/kml/pal2/icon18.png',
+        icon: require('../images/icon_marker_user.png'),
     },
     green: {
         icon: require('../images/icon_marker_green.png'),
@@ -60,7 +60,7 @@ export default function Maps({ page, product_id, product_name }) {
         })
         // call getStoreData() after the coordinates are fetched
         if (page === 'Stores') {
-            getStoreDataStores(data.coords.latitude, data.coords.longitude)
+            getStoreData(data.coords.latitude, data.coords.longitude)
         } else if (page === 'SelectedProduct') {
             getStoreDataProduct(
                 data.coords.latitude,
@@ -76,27 +76,14 @@ export default function Maps({ page, product_id, product_name }) {
         fetchLocations()
     }, [maxDistance])
 
-    const [activeMarker, setActiveMarker] = useState(null)
-    const handleActiveMarker = marker => {
-        if (marker === activeMarker) {
-            return
-        }
-        setActiveMarker(marker)
-    }
-
     const [markerInfo, setMarkerInfo] = useState(null)
 
-    const showUserFeedbackScreen = (
-        store_name,
-        store_id,
-        lat,
-        lng,
-        product_quantity,
-    ) => {
-        setMarkerInfo({ store_name, store_id, lat, lng, product_quantity })
+    const showOverlayScreen = (store_name, store_id, product_quantity) => {
+        setMarkerInfo({ store_name, store_id, product_quantity })
     }
+
     // fetch data for Stores tab - no product selected
-    async function getStoreDataStores(latitude, longitude) {
+    async function getStoreData(latitude, longitude) {
         const response = await fetch(
             `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
             {
@@ -113,16 +100,9 @@ export default function Maps({ page, product_id, product_name }) {
         console.log(stores)
     }
     // fetch data for SelectedProduct
-    async function getStoreDataProduct(
-        latitude,
-        longitude,
-        product_id,
-        //   product_name,
-    ) {
+    async function getStoreDataProduct(latitude, longitude, product_id) {
         const response = await fetch(
-            // `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
-            // `https://foodfinderapi.herokuapp.com/stores-with-products/?lat=52.50475601808786&lng=13.471279981799237&radius=${maxDistance}&product_code=${product_id}&product_name=${null}`,
-            `https://foodfinderapi.herokuapp.com/stores-with-products/?lat=52.520008&lng=13.404954&radius=100&product_code=${product_id}&product_name=${product_name}`, //link for
+            `https://foodfinderapi.herokuapp.com/stores-with-products/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}&product_code=${product_id}&product_name=${product_name}`,
             {
                 method: 'GET',
             },
@@ -149,7 +129,7 @@ export default function Maps({ page, product_id, product_name }) {
         <>
             <GoogleMap
                 onClick={() => {
-                    setActiveMarker(null)
+                    //setActiveMarker(null)
                     setMarkerInfo(null)
                 }}
                 mapContainerStyle={containerStyle}
@@ -166,7 +146,10 @@ export default function Maps({ page, product_id, product_name }) {
                             icon = icons.green.icon
                         } else if (product_quantity >= 0.5) {
                             icon = icons.orange.icon
-                        } else if (product_quantity !== null) {
+                        } else if (
+                            product_quantity !== null &&
+                            product_quantity >= 0
+                        ) {
                             icon = icons.red.icon
                         }
                         return (
@@ -175,13 +158,7 @@ export default function Maps({ page, product_id, product_name }) {
                                 key={store_id}
                                 position={position}
                                 onClick={() => {
-                                    handleActiveMarker(store_id)
-                                    showUserFeedbackScreen(
-                                        store_name,
-                                        store_id,
-                                        position.lat,
-                                        position.lng,
-                                    )
+                                    showOverlayScreen(store_name, store_id)
                                 }}
                             />
                         )
@@ -190,10 +167,13 @@ export default function Maps({ page, product_id, product_name }) {
                 <CircleF center={coordinates} options={mapCircleOptions} />
             </GoogleMap>
             <MaxDistanceSelector onChange={setMaxDistance} />
-            {/*showing StoreInfor or UserFeedbackScreen after clicking at markers*/}
+            {/*showing StoreInfoScreen or UserFeedbackScreen after clicking at markers*/}
             {markerInfo && page === 'Stores' && (
                 <div>
-                    <StoreInfoScreen store_name={markerInfo.store_name} />
+                    <StoreInfoScreen
+                        store_name={markerInfo.store_name}
+                        store_id={markerInfo.store_id}
+                    />
                 </div>
             )}
             {markerInfo && page === 'SelectedProduct' && (
