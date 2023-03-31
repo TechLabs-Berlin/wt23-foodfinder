@@ -77,6 +77,7 @@ export default function Maps({ page, product_id, product_name }) {
     }, [maxDistance])
 
     const [activeMarker, setActiveMarker] = useState(null)
+    const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const handleActiveMarker = marker => {
         if (marker === activeMarker) {
             return
@@ -176,6 +177,7 @@ export default function Maps({ page, product_id, product_name }) {
                                 position={position}
                                 onClick={() => {
                                     handleActiveMarker(store_id)
+                                    setIsOverlayOpen(true)
                                     showUserFeedbackScreen(
                                         store_name,
                                         store_id,
@@ -193,7 +195,10 @@ export default function Maps({ page, product_id, product_name }) {
             {/*showing StoreInfor or UserFeedbackScreen after clicking at markers*/}
             {markerInfo && page === 'Stores' && (
                 <div>
-                    <StoreInfoScreen store_name={markerInfo.store_name} />
+                    <StoreInfoScreen
+                        store_name={markerInfo.store_name}
+                        isOverlayOpen={isOverlayOpen}
+                    />
                 </div>
             )}
             {markerInfo && page === 'SelectedProduct' && (
@@ -202,6 +207,7 @@ export default function Maps({ page, product_id, product_name }) {
                         store_name={markerInfo.store_name}
                         product_id={product_id}
                         store_id={markerInfo.store_id}
+                        isOverlayOpen={isOverlayOpen}
                     />
                 </div>
             )}

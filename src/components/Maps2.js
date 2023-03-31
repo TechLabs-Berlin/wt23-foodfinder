@@ -1,9 +1,10 @@
 import { useEffect, useCallback, useState } from 'react'
 import { GoogleMap, MarkerF, CircleF } from '@react-google-maps/api'
 import { getCoordinates } from '../utils/geolocation'
-import StoreInfoScreen from './StoreInfoScreen'
+import StoreInfo from './StoreInfoScreen'
 import MaxDistanceSelector from './MaxDistanceSelector'
 import UserFeedbackScreen from './UserFeedbackScreen'
+import StoreInfoScreen from './StoreInfoScreen'
 
 const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
@@ -76,24 +77,30 @@ export default function Maps({ page, product_id, product_name }) {
         fetchLocations()
     }, [maxDistance])
 
-    const [activeMarker, setActiveMarker] = useState(null)
-    const handleActiveMarker = marker => {
+    /*const handleActiveMarker = marker => {
         if (marker === activeMarker) {
             return
         }
         setActiveMarker(marker)
-    }
+    } */
 
     const [markerInfo, setMarkerInfo] = useState(null)
+    const [activeMarker, setActiveMarker] = useState(null)
+    const [isOverlay, setIsOverlay] = useState(false)
 
-    const showUserFeedbackScreen = (
+    const handleActiveMarker = (
         store_name,
         store_id,
         lat,
         lng,
         product_quantity,
+        marker,
     ) => {
         setMarkerInfo({ store_name, store_id, lat, lng, product_quantity })
+        if (marker === activeMarker) {
+            setIsOverlay(true)
+        }
+        setActiveMarker(marker)
     }
     // fetch data for Stores tab - no product selected
     async function getStoreDataStores(latitude, longitude) {
@@ -175,8 +182,8 @@ export default function Maps({ page, product_id, product_name }) {
                                 key={store_id}
                                 position={position}
                                 onClick={() => {
-                                    handleActiveMarker(store_id)
-                                    showUserFeedbackScreen(
+                                    // handleActiveMarker(store_id)
+                                    handleActiveMarker(
                                         store_name,
                                         store_id,
                                         position.lat,
@@ -193,7 +200,11 @@ export default function Maps({ page, product_id, product_name }) {
             {/*showing StoreInfor or UserFeedbackScreen after clicking at markers*/}
             {markerInfo && page === 'Stores' && (
                 <div>
-                    <StoreInfoScreen store_name={markerInfo.store_name} />
+                    <StoreInfoScreen
+                        store_name={markerInfo.store_name}
+                        activeMarker={activeMarker}
+                        //isOverlay={isOverlay}
+                    />
                 </div>
             )}
             {markerInfo && page === 'SelectedProduct' && (
@@ -202,6 +213,7 @@ export default function Maps({ page, product_id, product_name }) {
                         store_name={markerInfo.store_name}
                         product_id={product_id}
                         store_id={markerInfo.store_id}
+                        //activeMarker={activeMarker}
                     />
                 </div>
             )}

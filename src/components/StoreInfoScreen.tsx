@@ -10,19 +10,19 @@ import {
 } from '@ionic/react'
 import './main.css'
 
-export default function UserFeedbackScreen(props) {
-    const [isOpen, setIsOpen] = useState(true)
+export default function StoreInfoScreen(props) {
+    const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
         setIsOpen(true)
-    }, [props.name])
+    }, [props.store_name])
 
     return (
         <>
             <IonModal isOpen={isOpen}>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle>{props.name}</IonTitle>
+                        <IonTitle>{props.store_name}</IonTitle>
                         <IonButtons slot='end'>
                             <IonButton onClick={() => setIsOpen(false)}>
                                 Close
