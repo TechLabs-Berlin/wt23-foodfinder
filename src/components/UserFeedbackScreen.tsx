@@ -18,14 +18,30 @@ export default function UserFeedbackScreen(props) {
 
     useEffect(() => {
         setIsOpen(true)
-    }, [props.name])
+    }, [props.store_name])
+
+    async function userFeedback(store_id, product_id, qty) {
+        const response = await fetch(
+            `https://foodfinderapi.herokuapp.com/update-quantity?store_id=${store_id}&product_code=${product_id}&new_quantity=${qty}`,
+            {
+                method: 'POST',
+            },
+        )
+            .then(data => {
+                console.log('Success:', data)
+            })
+            .catch(error => {
+                console.error('Error:', error)
+            })
+    }
 
     function buttonSubmit(quantity) {
+        userFeedback(props.store_id, parseInt(props.product_id), quantity)
         console.log(
             'Quantity: ',
             quantity,
             'Product ID: ',
-            props.product_id,
+            parseInt(props.product_id),
             'Store ID: ',
             props.store_id,
         ) // to do: sending quantity and product id feedback to the database
@@ -42,7 +58,7 @@ export default function UserFeedbackScreen(props) {
             <IonModal isOpen={isOpen}>
                 <IonHeader>
                     <IonToolbar>
-                        <IonTitle>{props.name}</IonTitle>
+                        <IonTitle>{props.store_name}</IonTitle>
                         <IonButtons slot='end'>
                             <IonButton onClick={() => setIsOpen(false)}>
                                 Close
