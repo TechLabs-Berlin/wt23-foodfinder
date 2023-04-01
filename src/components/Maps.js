@@ -35,7 +35,6 @@ export default function Maps({ page, product_id, product_name }) {
     const [stores, setStores] = useState([])
     const [maxDistance, setMaxDistance] = useState(2)
     console.log('maxDistance', maxDistance)
-    console.log(product_id)
 
     const mapCircleOptions = {
         strokeColor: '##7FFFD4',
@@ -77,9 +76,17 @@ export default function Maps({ page, product_id, product_name }) {
     }, [maxDistance])
 
     const [markerInfo, setMarkerInfo] = useState(null)
-
     const showOverlayScreen = (store_name, store_id, product_quantity) => {
         setMarkerInfo({ store_name, store_id, product_quantity })
+    }
+
+    // to open/close overlay screens
+    const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+    const pull_data = data => {
+        console.log(data) // logs data from child component: StoreInfoScreen and UserFeebackScreen
+        if (data === false) {
+            setIsOverlayOpen(false)
+        }
     }
 
     // fetch data for Stores tab - no product selected
@@ -128,10 +135,6 @@ export default function Maps({ page, product_id, product_name }) {
     return (
         <>
             <GoogleMap
-                onClick={() => {
-                    //setActiveMarker(null)
-                    setMarkerInfo(null)
-                }}
                 mapContainerStyle={containerStyle}
                 center={coordinates}
                 zoom={13}
@@ -159,6 +162,7 @@ export default function Maps({ page, product_id, product_name }) {
                                 position={position}
                                 onClick={() => {
                                     showOverlayScreen(store_name, store_id)
+                                    setIsOverlayOpen(true)
                                 }}
                             />
                         )
@@ -168,20 +172,22 @@ export default function Maps({ page, product_id, product_name }) {
             </GoogleMap>
             <MaxDistanceSelector onChange={setMaxDistance} />
             {/*showing StoreInfoScreen or UserFeedbackScreen after clicking at markers*/}
-            {markerInfo && page === 'Stores' && (
+            {isOverlayOpen && page === 'Stores' && (
                 <div>
                     <StoreInfoScreen
                         store_name={markerInfo.store_name}
                         store_id={markerInfo.store_id}
+                        func={pull_data}
                     />
                 </div>
             )}
-            {markerInfo && page === 'SelectedProduct' && (
+            {isOverlayOpen && page === 'SelectedProduct' && (
                 <div>
                     <UserFeedbackScreen
                         store_name={markerInfo.store_name}
                         product_id={product_id}
                         store_id={markerInfo.store_id}
+                        func={pull_data}
                     />
                 </div>
             )}

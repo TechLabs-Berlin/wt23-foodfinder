@@ -18,7 +18,8 @@ export default function StoreInfoScreen(props) {
 
     useEffect(() => {
         setIsOpen(true)
-    }, [props.store_name])
+        props.func(isOpen)
+    }, [isOpen])
 
     return (
         <>
