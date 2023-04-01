@@ -66,13 +66,10 @@ def get_nearby_stores():
     lng = float(request.args.get('lng'))
     radius = float(request.args.get('radius'))
 
-    # Retrieve the stores from the Supabase table
     stores = client.from_('stores').select('store_id, store_name, longitude, latitude').execute()
 
-    # Get the data from the APIResponse object
     stores_data = stores.data
 
-    # Calculate the distance from the provided coordinates to each store
     nearby_stores = []
     for store in stores_data:
         distance = applyDistanceFormula(lat, lng, store['latitude'], store['longitude'])
@@ -80,7 +77,6 @@ def get_nearby_stores():
             store['distance'] = distance
             nearby_stores.append(store)
 
-    # Sort the nearby stores by distance
     nearby_stores.sort(key=lambda x: x['distance'])
 
     return jsonify(nearby_stores)
@@ -93,7 +89,6 @@ def get_stores_with_products():
     product_code = request.args.get('product_code', None)
     product_name = request.args.get('product_name', None)
 
-    # Get nearby stores
     stores = client.from_('stores').select('store_id, store_name, longitude, latitude').execute()
     stores_data = stores.data
 
@@ -144,7 +139,6 @@ def get_stores_with_all_products():
     lng = float(request.args.get('lng'))
     radius = float(request.args.get('radius'))
 
-    # Retrieve the stores and their available products from the database
     query_result = (
         client.from_("stores")
         .select(
@@ -157,7 +151,6 @@ def get_stores_with_all_products():
 
     stores_data = query_result.data
 
-    # Calculate the distance from the provided coordinates to each store
     nearby_stores = []
     for store in stores_data:
         distance = applyDistanceFormula(lat, lng, store['latitude'], store['longitude'])
@@ -165,10 +158,8 @@ def get_stores_with_all_products():
             store['distance'] = distance
             nearby_stores.append(store)
 
-    # Sort the nearby stores by distance
     nearby_stores.sort(key=lambda x: x['distance'])
 
-    # Return the nearby stores and their available products as JSON
     return jsonify(nearby_stores)
 
 @app.route('/update-quantity/', methods=['POST'])
@@ -178,12 +169,24 @@ def update_quantity():
     new_quantity = request.args.get('new_quantity')
 
     if store_id and product_code and new_quantity is not None:
-        client.from_("product_availability_table") \
-            .update({"quantity": new_quantity}) \
+        product_exists = client.from_("product_availability_table") \
+            .select("product_code") \
             .filter("store_id", "eq", store_id) \
             .filter("product_code", "eq", product_code) \
             .execute()
-        return "Quantity updated successfully!", 200
+
+        if len(product_exists.data) > 0:
+            client.from_("product_availability_table") \
+                .update({"quantity": new_quantity}) \
+                .filter("store_id", "eq", store_id) \
+                .filter("product_code", "eq", product_code) \
+                .execute()
+            return "Quantity updated successfully!", 200
+        else:
+            client.from_("product_availability_table") \
+                .insert({"store_id": store_id, "product_code": product_code, "quantity": new_quantity}) \
+                .execute()
+            return "New entry created successfully!", 200
     else:
         return "Error: store_id, product_code, and new_quantity are required.", 400
 
@@ -194,5 +197,4 @@ def index():
 
 
 if __name__ == '__main__':
-    # Threaded option to enable multiple instances for multiple user access support
     app.run(threaded=True, port=5000)
