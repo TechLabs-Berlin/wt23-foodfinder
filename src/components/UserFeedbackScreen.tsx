@@ -18,7 +18,8 @@ export default function UserFeedbackScreen(props) {
 
     useEffect(() => {
         setIsOpen(true)
-    }, [props.store_name])
+        props.func(isOpen)
+    }, [isOpen])
 
     async function userFeedback(store_id, product_id, qty) {
         const response = await fetch(
