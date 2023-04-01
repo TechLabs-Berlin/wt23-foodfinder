@@ -19,8 +19,9 @@ code {
     justify-content: space-between;
     text-align: center;
 
-    height: 170px;
-    width: 400px;
+    height: 150px;
+    width: 100%;
+    max-width: 400px;
 
     margin: 0 auto;
 }
@@ -35,6 +36,8 @@ b {
     align-items: center;
     justify-content: center;
     margin-top: 10px;
+    margin-left: 10%;
+    margin-right: 10%;
 
     position: relative;
     overflow: hidden;
@@ -43,7 +46,6 @@ b {
 
     user-select: none;
 
-    width: 100%;
     height: 75px;
     border-radius: 8px;
 }
@@ -62,4 +64,13 @@ b {
 
 ion-col {
     text-align: center;
+}
+
+.range {
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+
+    margin-right: 10px;
 }
