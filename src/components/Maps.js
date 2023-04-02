@@ -5,7 +5,7 @@ import StoreInfoScreen from './StoreInfoScreen'
 import MaxDistanceSelector from './MaxDistanceSelector'
 import UserFeedbackScreen from './UserFeedbackScreen'
 
-const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
+//const googleMapsApiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
 
 const containerStyle = {
     width: '100%',
