@@ -14,7 +14,7 @@ import './main.css'
 
 export default function UserFeedbackScreen(props) {
     const [isOpen, setIsOpen] = useState(true)
-    const [presentAlert] = useIonAlert()
+    const [presentAlert, dismissAlert] = useIonAlert()
 
     useEffect(() => {
         setIsOpen(true)
@@ -52,6 +52,9 @@ export default function UserFeedbackScreen(props) {
                 subHeader: 'Thank you for your feedback!',
             })
         }, 200)
+        setTimeout(() => {
+            dismissAlert()
+        }, 2500)
     }
 
     return (

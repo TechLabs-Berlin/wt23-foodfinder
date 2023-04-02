@@ -31,10 +31,24 @@ const icons = {
 }
 
 export default function Maps({ page, product_id, product_name }) {
-    const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
+    const [coordinates, setCoordinates] = useState({
+        lat: 52.531677,
+        lng: 13.381777,
+    })
     const [stores, setStores] = useState([])
     const [maxDistance, setMaxDistance] = useState(2)
-
+    // to pass as props to StoreInfoScreen and UserFeedbackScreen
+    const [markerInfo, setMarkerInfo] = useState(null)
+    const showOverlayScreen = (store_name, store_id, product_quantity) => {
+        setMarkerInfo({ store_name, store_id, product_quantity })
+    }
+    // to open/close overlay screens
+    const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+    const pull_data = data => {
+        if (data === false) {
+            setIsOverlayOpen(false)
+        }
+    }
     const mapCircleOptions = {
         strokeColor: '##7FFFD4',
         strokeOpacity: 0,
@@ -47,19 +61,6 @@ export default function Maps({ page, product_id, product_name }) {
         visible: true,
         radius: maxDistance * 1000,
         zIndex: 1,
-    }
-
-    const [markerInfo, setMarkerInfo] = useState(null)
-    const showOverlayScreen = (store_name, store_id, product_quantity) => {
-        setMarkerInfo({ store_name, store_id, product_quantity })
-    }
-
-    // to open/close overlay screens
-    const [isOverlayOpen, setIsOverlayOpen] = useState(false)
-    const pull_data = data => {
-        if (data === false) {
-            setIsOverlayOpen(false)
-        }
     }
 
     const fetchLocations = useCallback(async () => {
