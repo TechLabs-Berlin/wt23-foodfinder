@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { IonLabel, IonRange } from '@ionic/react'
 
+import './main.css'
+
 export default function MaxDistanceSelector({ onChange }) {
     const [maxDistance, setMaxDistance] = useState(2)
 
@@ -12,6 +14,7 @@ export default function MaxDistanceSelector({ onChange }) {
     return (
         <>
             <IonRange
+                className='range'
                 onIonChange={handleChange}
                 value={maxDistance}
                 ticks={true}
