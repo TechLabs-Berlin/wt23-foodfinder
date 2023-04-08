@@ -37,12 +37,10 @@ export default function Maps({ page, product_id, product_name }) {
     })
     const [stores, setStores] = useState([])
     const [maxDistance, setMaxDistance] = useState(2)
-    // to pass as props to StoreInfoScreen and UserFeedbackScreen
     const [markerInfo, setMarkerInfo] = useState(null)
     const showOverlayScreen = (store_name, store_id, product_quantity) => {
         setMarkerInfo({ store_name, store_id, product_quantity })
     }
-    // to open/close overlay screens
     const [isOverlayOpen, setIsOverlayOpen] = useState(false)
     const pull_data = data => {
         if (data === false) {
@@ -64,13 +62,11 @@ export default function Maps({ page, product_id, product_name }) {
     }
 
     const fetchLocations = useCallback(async () => {
-        //fetching the user's coordinates
         const data = await getCoordinates()
         setCoordinates({
             lat: data.coords.latitude,
             lng: data.coords.longitude,
         })
-        // call getStoreData() after the coordinates are fetched
         if (page === 'Stores') {
             getStoreData(data.coords.latitude, data.coords.longitude)
         } else if (page === 'SelectedProduct') {
@@ -83,12 +79,10 @@ export default function Maps({ page, product_id, product_name }) {
             console.log('Error')
         }
     })
-    //re-render every time maxDistance changes
     useEffect(() => {
         fetchLocations()
     }, [maxDistance])
 
-    // fetch data for Stores tab - no product selected
     async function getStoreData(latitude, longitude) {
         const response = await fetch(
             `https://foodfinderapi.herokuapp.com/stores/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}`,
@@ -105,7 +99,7 @@ export default function Maps({ page, product_id, product_name }) {
         setStores(stores)
         console.log(stores)
     }
-    // fetch data for SelectedProduct
+
     async function getStoreDataProduct(latitude, longitude, product_id) {
         const response = await fetch(
             `https://foodfinderapi.herokuapp.com/stores-with-products/?lat=${latitude}&lng=${longitude}&radius=${maxDistance}&product_code=${product_id}&product_name=${product_name}`,
@@ -115,10 +109,9 @@ export default function Maps({ page, product_id, product_name }) {
         )
         const data = await response.json()
         const stores = data.map(store => {
-            //accessing an array in the database
             const productQuantity = store.products.reduce(
                 (acc, cur) => acc + cur.quantity,
-                null, //set null as an initial value in case there's no product quantity data
+                null,
             )
             return {
                 store_id: store.store_id,
@@ -138,9 +131,7 @@ export default function Maps({ page, product_id, product_name }) {
                 center={coordinates}
                 zoom={13.5 - maxDistance * 0.5}
             >
-                {/*showing the user's location*/}
                 <MarkerF icon={icons.user.icon} position={coordinates} />
-                {/*showing locations of stores*/}
                 {stores.map(
                     ({ store_id, store_name, position, product_quantity }) => {
                         let icon = icons.white.icon
@@ -170,7 +161,6 @@ export default function Maps({ page, product_id, product_name }) {
                 <CircleF center={coordinates} options={mapCircleOptions} />
             </GoogleMap>
             <MaxDistanceSelector onChange={setMaxDistance} />
-            {/*showing StoreInfoScreen or UserFeedbackScreen after clicking at markers*/}
             {isOverlayOpen && page === 'Stores' && (
                 <div>
                     <StoreInfoScreen
