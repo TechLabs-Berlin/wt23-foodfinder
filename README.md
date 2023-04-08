@@ -19,11 +19,11 @@ Our app is designed to help people in the neighborhood find the products they ne
 
 Here's what our app can do for you:
 
-📍 Find nearby stores: Our app uses maps to show you all the stores in your area that carry the products you're looking for.
+- Find nearby stores: Our app uses maps to show you all the stores in your area that carry the products you're looking for.
 
-💜 Keep track of your favorites: Create a list of your favorite products to easily check their availability when you need to buy them.
+- Keep track of your favorites: Create a list of your favorite products to easily check their availability when you need to buy them.
 
-🤝 Help fellow shoppers: Scan a product and share if it's in or out of stock to help other users know before they go.
+- Help fellow shoppers: Scan a product and share if it's in or out of stock to help other users know before they go.
 
 We believe that building a strong sense of community starts with making everyday tasks like grocery shopping easier and more convenient. So join us today and start experiencing the benefits of a more connected neighborhood!
 
