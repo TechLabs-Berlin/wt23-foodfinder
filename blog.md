@@ -1,3 +1,23 @@
+<p align="center">
+  <img src="https://i.ibb.co/C0FgRXb/Bildschirmfoto-2023-02-18-um-10-55-14-removebg-preview.png" border="0">
+</p>
+
+<p align="center">
+<p align="center">_______________</p>
+</p>
+
+<h5 align="center">
+  <a href="#About">About</a>  |
+  <a href="#Background">Background</a>  |
+  <a href="#UX">UX</a>  |
+  <a href="#WD">WD</a>  |
+  <a href="#DS">DS</a>  |
+  <a href="#Conclusion">Conclusion</a>  |
+  <a href="#Deployment">Deployment</a>
+</h5>
+
+## About
+
 **Introducing the FoodFinder APP: A Quick and Accurate Way to Find Suitable Products in Your Neighborhood**
 
 Are you tired of spending hours searching for suitable products that meet your dietary restrictions? The FoodFinder APP is here to help! Designed to save you time and effort, the FoodFinder Mobile APP is a straightforward way to find products suitable for your needs as close to you as possible.
@@ -8,7 +28,8 @@ Our app lets you search for specific products and displays nearby stores that st
 
 Furthermore, FoodFinder is continually being updated with new products and stores, so you can rest assured that you'll never run out of options. We understand the importance of having access to a wide range of food choices that align with your dietary restrictions, and that's precisely what FoodFinder aims to provide.
 
-**Background**
+## Background
+
 The FoodFinder APP was developed to address the problem faced by grocery shoppers with dietary restrictions who need a quick and accurate way to find suitable products in their neighborhood. To create the app, we used a tech stack that includes Python, Postgres, SQL, Flask, Heroku, Figma, Miro, Canva, HTML, CSS, JavaScript, React JS, Ionic, and backend Supabase. We also used FoodFinder API and Open Food Facts API to ensure that the app provides up-to-date product information.
 Features and Benefits
 The FoodFinder APP is designed to make your life easier. Here are some of its key features:
@@ -17,7 +38,7 @@ Real-time store locations: The app provides real-time locations of stores near y
 Up-to-date product information: The app uses FoodFinder API and Open Food Facts API to ensure that product information is accurate and up-to-date.
 Time-saving: The app saves you time and effort by providing a quick and accurate way to find suitable products in your neighborhood.
 
-**UX:**
+## UX
 
 FoodFinder began as an app to aid those with gluten intolerance and celiac disease. However, we soon realized the necessity to accommodate other dietary restrictions and expanded the app's scope. Further research was conducted on lactose intolerance, allergies, and other dietary needs to add relevant features. 
 
@@ -39,7 +60,7 @@ Users were then asked to test out a flow like—doing a product search, getting 
 
 https://user-images.githubusercontent.com/117666676/230608294-e1136112-4ef1-44fc-acfc-c7d687a49190.mov
 
-**WD:**
+## WD
 
 After several Product sessions and mentor recommendations, we decided to utilize the Ionic framework, which allowed us to swiftly develop a functional three-tab mobile app. By implementing this routing structure, we were able to effectively develop and showcase independently the two main features of the app, namely the food search and locations map.
 
@@ -59,7 +80,7 @@ To ensure accurate data collection, we have assigned values to the reported quan
 In addition, we have decided to include an option to display store locations without requiring the selection of a specific product. This feature can be found in the "Stores" tab and allows users to view all available stores, regardless of product availability.
 The page provides store location information and details about store opening hours. This information is currently a mockup, and we are considering it a potential future development with real data.
 
-**DS:**
+## DS
 
 DATA
 
@@ -96,16 +117,16 @@ We hosted our data in Supabase and built the backend using Flask to create an AP
 For further details on the API, please refer to the following GitHub page: https://github.com/TechLabs-Berlin/wt23-foodfinder/tree/api
 
 
-**Conclusion:**
+## Conclusion
 
 We are happy that we managed to incorporate most of what we set out for our MVP—a web app integrated with a geolocation-based map where users can search for products from a database with the results filtered according to the user's proximity along with the ability to collect data. A useful resource for future development. We worked and learned so much together as a team and the project phase helped us apply the theory and accelerated our learning as individuals. 
 
 
 In conclusion, FoodFinder is the perfect solution for people with special dietary needs. With our user-friendly app, finding suitable products has never been easier. So if you're looking to transition to a vegan diet or cutting out specific foods, give FoodFinder a try, and let us make your journey a little less daunting.
 
+## Deployment
 
-
-**Deployment on Vercel:**
+Deployment on Vercel:
 
 https://wt23-foodfinder-4bb6qf3gc-foodfinder-test.vercel.app/
 
