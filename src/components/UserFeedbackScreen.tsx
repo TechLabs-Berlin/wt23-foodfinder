@@ -45,7 +45,7 @@ export default function UserFeedbackScreen(props) {
             parseInt(props.product_id),
             'Store ID: ',
             props.store_id,
-        ) // to do: sending quantity and product id feedback to the database
+        )
         setTimeout(() => {
             setIsOpen(false)
             presentAlert({
