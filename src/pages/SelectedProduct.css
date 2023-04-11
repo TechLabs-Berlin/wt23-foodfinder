@@ -1,0 +1,6 @@
+.productChip {
+    pointer-events: none;
+    display: flex;
+    border-radius: 10px;
+    padding: 1.5rem;
+}

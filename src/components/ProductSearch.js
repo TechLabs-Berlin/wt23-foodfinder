@@ -1,106 +1,122 @@
-import ProductItem from "../components/ProductItem";
-import { useState, useEffect } from "react";
+import ProductItem from '../components/ProductItem'
+import { useState } from 'react'
 import {
-  IonCard,
-  IonCardContent,
-  IonSearchbar,
-  IonList,
-  IonSpinner,
-} from "@ionic/react";
-import "./ProductSearch.css";
-import MaxDistanceSelector from "../components/MaxDistanceSelector";
+    IonCard,
+    IonIcon,
+    IonCardContent,
+    IonSearchbar,
+    IonList,
+    IonProgressBar,
+    IonButton,
+} from '@ionic/react'
+import { close } from 'ionicons/icons'
+
+import './ProductSearch.css'
 
 function ProductSearch() {
-  const [maxDistance, setMaxDistance] = useState(1);
-  console.log("maxDistance", maxDistance);
-  const [products, setProducts] = useState([]);
-  const [spinnerShow, setSpinnerShow] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(""); //save selected product
+    const [products, setProducts] = useState([])
+    const [spinnerShow, setSpinnerShow] = useState(false)
+    const [resultChips, setResultChips] = useState('')
 
-    const handleEnter = (event) => {
-        if (event.key === "Enter") {
-            setSpinnerShow(true);
-            // console.log(event.target.value); // checks input
-            const inputValue = event.target.value;
+    let alertChips
+
+    const handleEnter = event => {
+        if (event.key === 'Enter') {
+            setSpinnerShow(true)
+            const inputValue = event.target.value
 
             // cors fix
             fetch(
                 `https://de.openfoodfacts.org/cgi/search.pl?action=process&json=true&search_terms=${inputValue}`,
                 {
-                    method: "GET",
+                    method: 'GET',
                     headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                }
+                },
             )
-                .then((response) => {
+                .then(response => {
                     if (response.ok) {
-                        return response.json();
+                        return response.json()
                     } else {
-                        alert("HTTP-Error: " + response.status);
+                        alert('HTTP-Error: ' + response.status)
                     }
                 })
-                .then((response) => {
-                    setProducts(response.products);
-                    console.log(response.products);
-                    setSpinnerShow(false);
-                });
+                .then(response => {
+                    setProducts(response.products)
+                    console.log(response.products)
+                    setSpinnerShow(false)
+                    if (response.products.length === 0) {
+                        setResultChips('empty')
+                    } else setResultChips('full')
+                })
         }
-    };
+    }
 
-    // console.log selected product - to be used in the API call
-    useEffect(() => {
-        console.log(
-            selectedProduct.product_name,
-            selectedProduct.brands,
-            selectedProduct.quantity
-        );
-    }, [selectedProduct]);
+    //list results
+    const productResults = products.map((product, index) => {
+        return <ProductItem product={product} key={index} />
+    })
 
-    const handleProductClick = (product) => {
-        setSelectedProduct(product);
-    };
+    if (resultChips === 'full') {
+        alertChips = (
+            <IonCard className='chipWarning'>
+                <IonCardContent>
+                    <strong>Warning</strong> There is always a possibility that
+                    data about allergens may be missing, incomplete, incorrect
+                    or that the product's composition has changed. If you are
+                    allergic, always check the information on the actual product
+                    packaging.
+                </IonCardContent>
+                <IonButton
+                    className='closeButton'
+                    fill='clear'
+                    onClick={() => setResultChips('')}
+                >
+                    <IonIcon aria-hidden='true' icon={close} />
+                </IonButton>
+            </IonCard>
+        )
+    } else if (resultChips === 'empty') {
+        alertChips = (
+            <IonCard className='chipError'>
+                <IonCardContent>
+                    <strong>
+                        No results for your search, try another keyword
+                    </strong>
+                </IonCardContent>
+                <IonButton
+                    className='closeButton'
+                    fill='clear'
+                    onClick={() => setResultChips('')}
+                >
+                    <IonIcon aria-hidden='true' icon={close} />
+                </IonButton>{' '}
+            </IonCard>
+        )
+    }
 
-  //list results
-  const productResults = products.map((product, index) => {
     return (
-      <ProductItem product={product} key={index} onClick={handleProductClick} />
-    );
-  });
-
-  const warningChip =
-    productResults.length > 0 ? (
-      <IonCard className="warning">
-        <IonCardContent>
-          <strong>Warning</strong> There is always a possibility that data about
-          allergens may be missing, incomplete, incorrect or that the product's
-          composition has changed. If you are allergic, always check the
-          information on the actual product packaging.
-        </IonCardContent>
-        {/* add a closing button */}
-      </IonCard>
-    ) : null;
-
-  return (
-    <>
-      <IonSearchbar
-        animated={true}
-        showCancelButton="focus"
-        placeholder="Search"
-        inputMode="search"
-        onKeyDown={handleEnter}
-      ></IonSearchbar>
-      <MaxDistanceSelector onChange={setMaxDistance} />
-      <IonList id="productList">
-        {spinnerShow ? <IonSpinner name="dots" /> : null}
-        {warningChip}
-        {productResults}
-      </IonList>
-    </>
-  );
+        <>
+            <IonSearchbar
+                animated={true}
+                showCancelButton='focus'
+                placeholder='Search'
+                inputMode='search'
+                onKeyDown={handleEnter}
+            ></IonSearchbar>
+            <IonList id='productList'>
+                {spinnerShow ? (
+                    <IonProgressBar type='indeterminate'></IonProgressBar>
+                ) : null}
+                {alertChips}
+                {productResults}
+            </IonList>
+        </>
+    )
 }
 
-export default ProductSearch;
+export default ProductSearch
 
 // future improvements: according to user input in search:
 // if number search codebar
