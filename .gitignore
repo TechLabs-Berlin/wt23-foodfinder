@@ -28,3 +28,5 @@ yarn-error.log*
 
 # Optional eslint cache
 .eslintcache
+/venv/
+/test_folder/
