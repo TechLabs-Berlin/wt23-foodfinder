@@ -53,7 +53,7 @@ You may also see any lint errors in the console.
 
 ## Authors
 
-Data Science: Max Bujanov, Ekaterina Kozelkova \
+Data Science: Max B., Ekaterina Kozelkova \
 User Experience: Rozana Rajkumari \
 Web Development: Lucrecia Garino, Marta Jasińska
 
